@@ -17,11 +17,13 @@ The reviewed Foundry documentation distinguishes **model guardrails (GA)** from 
 | Model safety policies | Model-level guardrails with supported categories/intervention points | Record effective thresholds, model/API support, and blocking behavior; do not assume every optional detector is included |
 | Agent safety policies | **Preview**, including supported tool boundaries | Explicit agent policy **replaces**, rather than merges with, the model policy; reconcile the full required baseline |
 | Agent policy modes / detectors | Agent guardrails do **not** support annotate-only, Spotlighting, or groundedness controls in reviewed guidance | Do not claim these agent-level protections; provide separate supported evaluation/application controls where needed |
-| Hosted content-safety attachment | **Preview** agent guardrail scope; `rai_config` controls attachment | Omitting `rai_config` means no hosted content-safety guardrail; supplying it without a policy selects the default |
+| Hosted content-safety attachment | **Preview** agent guardrail scope; `rai_config` controls attachment | Omission means no hosted content safety; supplying it without a policy selects the default; custom policies require the full ARM resource ID |
 | Invalid hosted policy reference | Documented invalid policy ID can fail open while agent appears active | Verify policy existence/validity and an actual expected-block response; deployment status is not safety evidence |
 | Hosted network egress guardrails | **Preview**, hosted-only; distinct from VNet/firewall controls | Verify rules and effective behavior; audit mode can still transform/rewrite traffic |
 | Future egress capabilities | Dynamic secret/identity header injection, service-tag/IP rules, MCP policies, PII/DLP inspection described as future | Do not count them as implemented controls or use them to approve sensitive traffic |
 | Continuous evaluation / scheduled red teaming / monitoring | Named Foundry experiences are **Preview** | Detective/assessment controls over sampled or completed activity, not guaranteed inline blocking |
+| Agent optimizer | **Limited Preview**; proposes instructions, skills, tool descriptions, and model selections | Candidate changes only; test endpoints/mocks and separate evaluation credentials; reevaluation and independent release approval |
+| Foundry visual workflow experience | **Preview; retirement scheduled 2026-12-01** | No new production dependencies; inventory/migrate existing workflows; Microsoft directs new workflows to Microsoft Agent Framework |
 
 Prompt Shields and harmful-content detection can support defense in depth at documented points. They cannot grant user permissions, secure a database row, validate a payment, or guarantee factual correctness. See [security](../07-agent-security/README.md) and [quality evaluation](../12-quality-evaluation/README.md).
 
@@ -82,11 +84,15 @@ Map user input, retrieved documents, model request/response, proposed tool call,
 
 Include bypass paths: direct backend/model calls, managed-OAuth tools outside gateway routing, application-hosted functions, code-first MCP, streaming, scheduled runs, and fallback providers. Restrict uncovered high-risk paths.
 
+Apply this map to both persisted types—prompt and hosted—and external-code Responses API/ephemeral agents without a resource. Workflow is an orchestration pattern/experience-specific feature, not a third current top-level persisted type. Optimizer-generated candidates and promoted toolbox defaults must trigger dependency, schema/trust, authorization, safety, and quality reassessment before release.
+
+Toolbox default promotion can update all consuming workloads without their redeployment: inventory every consumer, establish version bindings, regress affected trajectories, and retain rollback. Pin immutable specific skill versions. Tool-search candidates are not authorization. Optimizer evaluations invoke tools and can incur real charges/mutations, so require test endpoints/mocks and separate credentials; prompt-agent description optimization cannot replace separate client-side tool-execution tests.
+
 ### 2. Configure and prove the effective policy
 
 1. Export the exact policy ID/version, thresholds, supported categories, target model/runtime/API, and intervention points.
 2. Determine whether model policy or an explicit replacing agent policy applies; compare every required baseline setting.
-3. For hosted content safety, explicitly configure `rai_config`, verify the referenced policy exists and is valid, and check default-selection behavior when no policy is specified.
+3. For hosted content safety, explicitly configure `rai_config`, use the **full ARM resource ID** for a custom policy, verify that policy exists and is valid, and check default-selection behavior when no policy is specified. Missing/invalid references can fail open while the agent remains active.
 4. Run an approved non-destructive expected-block fixture against the released deployment; retain decision/error metadata without unnecessary harmful content.
 5. Check allowed benign cases and supported languages/modalities/streams so false positives and unsupported paths are visible.
 6. Treat unverified or invalid policy references as a release failure even if the service allows deployment. Enforce the release hold externally; do not assume the platform fails closed.
@@ -126,6 +132,8 @@ Use the [security](../../checklists/security-review.md), [production-readiness](
 - [Hosted agent guardrails](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails), including [Preview network egress controls](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails#network-egress-controls-preview).
 - [Prompt Shields concepts](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection).
 - [Sensitive trace-content migration](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-sensitive-content).
+- [Agent types](https://learn.microsoft.com/en-us/azure/foundry/agents/overview), [toolboxes](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview), and [Preview agent optimizer](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-optimizer-overview).
+- [Visual workflow Preview and retirement](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow).
 - Status and evidence caveats: [Foundry](../../references/microsoft-foundry.md), [Azure](../../references/azure.md); [canonical baselines](../../governance/baselines/README.md).
 
 ## Limitations and unresolved decisions

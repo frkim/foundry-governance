@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: this six-level model is an enterprise proposal, not Microsoft certification or legal assurance.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -17,6 +17,8 @@ Foundry, Azure, and connected governance products provide building blocks for im
 Purchasing a product, enabling a portal feature, or using a specific SDK does not establish maturity.
 Feature status and actual enforcement must be validated independently of the assessment score.
 This chapter's levels 0–5 are a local operating model, not a reproduction of a vendor scoring system.
+Foundry Control Plane/Operate is a **Preview, currently portal-only** implementation option, not evidence of maturity by itself.
+Validate inventory/telemetry coverage and connected controls; retain independent application tests, owners, and evidence.
 
 ## Enterprise recommendation
 
@@ -26,23 +28,24 @@ Do not average a missing authorization boundary away with strong documentation o
 Progress requires demonstrated outcomes and sustained operation, not merely policy publication.
 Apply legal, security, and safety minimums at every level; low maturity is not permission for unsafe production.
 
-### Levels, evidence, and measurable exit criteria
+### Canonical levels, evidence, and measurable exit criteria
 
 Exit criteria describe what must be demonstrated **before advancing** from the named level.
 Percentages are proposed targets; denominators must be documented and unknown scope disclosed.
 
 | Level | Operating state | Required evidence | Exit criteria |
 |---|---|---|---|
-| 0 — Uncontrolled | Experiments or unknown assets; no repeatable governance | Discovery report, accountable sponsor, containment record | 100% of discovered production agents assigned owners or suspended; initial inventory and risk triage completed |
-| 1 — Visible | Owned inventory and approved isolated experimentation | Inventory, data classification, approved uses, basic access review | 100% of proposed production agents have owner, risk/data classification, approved identity and dependency list; baseline approved |
+| 0 — Ad hoc | Experiments or unknown assets; no repeatable governance | Discovery report, accountable sponsor, containment record | 100% of discovered production agents assigned owners or suspended; initial inventory and risk triage completed |
+| 1 — Basic | Owned inventory and approved isolated experimentation | Inventory, data classification, approved uses, basic access review | 100% of proposed production agents have owner, risk/data classification, approved identity and dependency list; baseline approved |
 | 2 — Controlled | Mandatory controls and repeatable production intake | Control evidence, golden sets, release approvals, spend guards, runbooks | 100% of production agents pass mandatory gates and have tested alerts/rollback; no expired high-risk exception; two releases evidenced |
-| 3 — Managed | Automated release gates and reliable operating measurements | Immutable manifests, policy/evaluation gates, SLO and cost dashboards, reconciliation | ≥95% inventory freshness, ≥98% cost allocation, 100% critical audit coverage; two consecutive monthly reviews and one recovery drill |
-| 4 — Measured | Risk-based portfolio management and continuous assurance | Slice-level drift review, error budgets, supplier monitoring, unit economics, incident learning | ≥95% material changes use automated gates; 100% consequential paths pass approval/replay tests; two quarters of measurable improvement |
-| 5 — Optimizing | Closed-loop improvement within approved authority | Controlled experiments, predictive capacity/risk signals, external assurance where warranted | Sustain Level 4 controls; quarterly reassessment; independently validate one material improvement each quarter without safety/SLO regression |
+| 3 — Governed | Central policies, tool/MCP/gateway governance, and accountable FinOps | Approved tool/MCP registers, schema/routing/bypass tests, central policies, cost allocation/forecast, immutable manifests | ≥95% inventory freshness, ≥98% cost allocation, 100% critical audit coverage; two consecutive monthly reviews and one recovery drill |
+| 4 — Scaled | Automated compliance checks/evidence and CI/CD, central observability, and governed fleet operations | Automated policy/evaluation gates, compliance evidence collection, fleet coverage, central SLO dashboards, supplier/drift review | ≥95% material changes use automated gates; 100% consequential paths pass approval/replay tests; two quarters of measurable improvement |
+| 5 — Optimized | Continuous evaluation and optimization with controlled remediation | Production/slice evaluations, controlled experiments, approved remediation playbooks, measured outcomes and independent review | Sustain Level 4 controls; quarterly reassessment; independently validate one material improvement each quarter without safety/SLO regression |
 
 For Level 2, manual governance can satisfy the gate only with complete, timely evidence.
 For Level 4's 95% automation target, the remaining changes still require all mandatory controls through an approved manual path.
 Level 5 does not mean unlimited autonomy or freedom from human accountability.
+Automated compliance checks do not make legal determinations; Level 5 remediation follows bounded approved playbooks and retains required transaction approvals.
 An organization may deliberately remain at a lower level if its approved scope does not require greater scale.
 
 ### Domain scorecard
@@ -124,6 +127,7 @@ Use completed [architecture](../../checklists/architecture-review.md), [security
 - [Agentic AI maturity: security and governance](https://learn.microsoft.com/en-us/agents/adoption-maturity-model/maturity-model-security-governance).
 - [Govern agents across the organization](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai-agents/governance-security-across-organization).
 - [Responsible AI policies](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/responsible-ai-policies).
+- [Foundry Control Plane — Preview](https://learn.microsoft.com/en-us/azure/foundry/control-plane/overview).
 
 Official Learn search results identify related guidance; direct retrieval was unavailable.
 All levels, thresholds, evidence rules, and progression targets here are original enterprise recommendations.

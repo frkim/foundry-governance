@@ -69,6 +69,8 @@ Record APIM resource/tier/generation, region, networking mode, API/policy versio
 
 For Foundry's existing-APIM association, verify tenant/subscription eligibility and one-gateway-per-resource sharing before choosing project topology. Projects sharing the associated gateway still need separate consumer authorization and attribution.
 
+Inventory callers of both persisted agent types—prompt and hosted—and external-code Responses API/ephemeral applications without an agent resource. Attribute those external consumers using verified application/workload IDs. Hosted Responses, Invocations, WebSocket, and A2A endpoint support does not establish gateway protocol compatibility or automatic routing; prove each selected path independently.
+
 ### 2. Establish identity and prevent bypass
 
 1. Select caller authentication and validate issuer, audience, tenant, client claims, and required roles/scopes where supported.

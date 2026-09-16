@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: native skills are documented as preview; packaging and execution vary by runtime.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -17,6 +17,12 @@ Skill content can guide behavior and reference supporting resources.
 A skill is not an identity, authorization grant, model, or independently trusted execution boundary.
 Do not confuse reusable instructions with a tool API, MCP server, or framework plugin.
 Native support, package format, runtime behavior, and version selection require feature-level validation.
+The reviewed Agent Service overview describes skills for both prompt and hosted agents.
+Toolboxes provide a managed, versioned shared MCP endpoint for built-in/custom tools and related reusable capabilities.
+The named **core Toolboxes portal experience is GA** in the readiness table; individual tools, networking, and protocol support need separate verification.
+Skills and tool search remain **Preview**; the core Toolbox status does not promote their status.
+Toolbox membership, discoverability, and a valid endpoint credential do not authorize every consumer to invoke every tool.
+Tool search is **Preview** and returns candidate selections, not permissions; authorize the selected operation at invocation.
 Toolbox-based skill discovery can involve MCP resources; tool-only MCP support does not prove skill compatibility.
 Validate discovery, resource reads, authorization, and gateway transport separately before adoption.
 
@@ -105,6 +111,9 @@ Before revocation, query the [inventory dependency graph](../25-ai-inventory/REA
 Disable affected attachments/routes, invalidate cached packages, and publish a replacement when available.
 Reevaluate dependent agents before resuming execution.
 If a runtime follows mutable skill defaults, wrap deployment with digest verification or reject that production pattern.
+Treat a shared Toolbox default/version promotion as a change affecting every consumer, even without an agent redeployment.
+Snapshot tool schemas and capabilities; review provenance, permissions, and behavioral changes before promotion.
+Stage promotion against representative consumers and preserve a tested rollback/revocation path.
 Do not assume removing a registry entry removes already loaded or cached content.
 
 ## Evidence
@@ -124,6 +133,8 @@ Include skill dependencies in [security review](../../checklists/security-review
 - [Foundry Agent Service overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview).
 - [Agent Framework overview](https://learn.microsoft.com/en-us/agent-framework/overview/).
 - [Toolbox and shared capability overview](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview).
+- [Tool search — Preview](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/tool-search).
+- [Named-experience feature readiness](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga).
 
 Official Learn search results identify the skills preview; direct page retrieval was unavailable.
 Registry workflow, package contract, digest enforcement, and revocation procedures are enterprise recommendations.

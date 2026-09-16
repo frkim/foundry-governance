@@ -20,7 +20,9 @@ Managed identities and workload identity federation avoid embedding long-lived a
 
 Microsoft Entra Agent ID is an evolving, feature-specific capability, not a universal identity retrofit for every agent/tool. Require the source register's current status and a demonstrated identity-to-action audit path before relying on it for isolation; use supported workload identities where the required Agent ID combination is unverified.
 
-Current new-model agents obtain a unique identity and endpoint at creation; hosted runtime identity differs from the project managed identity used for infrastructure. Legacy unpublished-project/publishing-time identity behavior is not the universal default. Recreating an agent requires explicit downstream grant migration; do not assume the planned in-place identity upgrade is available.
+Current new-model **persisted** agents obtain a unique identity and endpoint at creation; hosted runtime identity differs from the project managed identity used for infrastructure such as Azure Container Registry. Legacy unpublished-project/publishing-time identity behavior is not the universal default. When recreating an agent, downstream grants are **not transferred**: explicitly reassign and verify required permissions, then retire obsolete grants. Do not assume the planned in-place identity upgrade is available.
+
+External code can use the Responses API as an **ephemeral agent without a persisted agent resource**. Register the application, workload identity, caller/delegation model, tool grants, and owner anyway; do not assume that an agent-resource identity or agent-scope endpoint role exists for that pattern.
 
 ## Enterprise recommendation
 

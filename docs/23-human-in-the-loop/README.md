@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: framework approval primitives do not by themselves provide business authorization or durable transactions.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 

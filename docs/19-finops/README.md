@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: invoices lag execution; token estimates and shared-cost allocation are imperfect.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -17,7 +17,7 @@ Model and PTU billing vary by deployment, offer, usage type, and commercial agre
 Azure resource tags support allocation, but do not automatically allocate every charge to an agent or user.
 Execution telemetry supplies operational estimates; billing records remain the financial reconciliation source.
 **Budgets alert rather than stop resources; TPM/RPM quota is capacity, not a monetary cap.**
-Foundry's documented cost estimates exclude PTU and have agent-type/hosting coverage limits.
+Foundry's documented cost estimates exclude PTU; agent estimates also exclude prompt and non-Foundry agents.
 Use the [status register](../../references/microsoft-foundry.md) to validate estimate coverage; missing estimates are not zero cost.
 
 ## Enterprise recommendation
@@ -45,13 +45,15 @@ For a zero denominator report “not applicable,” not zero efficiency or infin
 | KPI | Formula / definition | Use |
 |---|---|---|
 | Total spend | Sum of billed + agreed amortized allocated charges | Financial accountability |
-| Spend by agent/project/team/model/environment | Sum `C` grouped by trusted allocation key | Showback and ownership |
+| Spend by business unit/agent/project/team/model/tool/MCP server/environment | Sum `C` grouped by trusted allocation key, using one allocation view at a time | Showback and ownership without double-counting |
 | Request volume | Count attempted requests, split accepted/denied/completed | Explain demand |
 | Active users / adoption | Distinct authorized active users; active / eligible users | Value and reach |
 | Input/output/cached tokens | Sum provider-reported counts by category | Explain model consumption |
 | Tokens per request | Total consumed tokens / model-bearing requests | Prompt/output efficiency |
 | Cost per request | `C / R` with denied-request treatment disclosed | Operational unit cost |
 | Cost per successful task | `C / S` using business-verified success | Primary value-adjusted cost |
+| Cost per committed business transaction | Attributed total cost / distinct committed business transaction IDs; exclude retry duplicates from denominator, retain their cost | End-to-end transaction economics |
+| Cost/quality ratio | Report paired `(cost per successful task, calibrated quality score)` on the same task cohort; no cross-rubric scalar division | Compare cost-quality trade-offs only for compatible scores |
 | Cost per active user | `C / distinct active users` | Product economics |
 | Cost per 1,000 tokens | Model-attributed cost × 1,000 / billed tokens | Compare like-for-like mixes |
 | Cost per conversation | Allocated conversation cost / closed conversations | Multi-turn economics |
@@ -121,6 +123,7 @@ Cost/request is `1,200 / 10,000 = 0.12`; cost/success is `1,200 / 8,000 = 0.15`.
 A cheaper model costing 1,000 with only 5,000 successes costs `0.20` per success.
 Do not promote that candidate on token price alone.
 For PTU, compare full monthly capacity/commitment cost against equivalent PAYG demand plus overflow.
+Verify deployable capacity before a reservation purchase; a discount commitment does not guarantee capacity.
 Model uncertainty, peak load, underutilization, and approved fallback in the scenario analysis.
 
 ## Evidence

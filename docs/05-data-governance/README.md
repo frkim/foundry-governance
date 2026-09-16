@@ -54,6 +54,9 @@ Record actual resource IDs/locations, processing geography, owner, identity, ten
 | Source documents | System of record and staging/blob containers | Source-native user ACLs; dedicated ingestion identity | Preserve source schedule and propagate deletion/ACL changes |
 | Parsed chunks and embeddings | Search/vector store plus metadata | Index-writer identity distinct from query reader; tenant/document filters | Rebuild/delete all derived records when source expires or permission changes |
 | Prompts, messages, attachments | Application and runtime conversation stores | Per-user/tenant application checks; runtime storage identity | Explicit conversation expiry, attachment cleanup, user deletion handling |
+| Hosted session files | Session-isolated compute and persistent `$HOME/files` | Hosted runtime identity and application file access rules | Files persist across idle periods; set explicit cleanup/retirement, not “delete when VM idles” |
+| Hosted durable conversation history | Conversation store separate from session files | Verified conversation/user/tenant authorization | Deleting files does not establish conversation deletion |
+| Hosted application state | Separate application state store | Application/runtime identity and key/namespace authorization | Inventory, expire, back up, and delete independently of session files and conversations |
 | Agent memory and summaries | Runtime-managed or application-owned store | Namespace by authorized tenant/user/purpose | Bounded TTL and reset; prohibit unrelated cross-user memory |
 | Tool inputs/results | Tool database, queues, provider logs, and caches | Per-tool operation rights and delegated context where required | Minimize payload; link retention to business purpose and external terms |
 | Outputs and exports | Application DB, object store, email, or recipient system | Recipient and destination authorization before send | Apply classification/retention to generated artifacts and recipients |
@@ -63,6 +66,8 @@ Record actual resource IDs/locations, processing geography, owner, identity, ten
 | Backups, replicas, caches | Every service/region and external provider | Restricted restore/operator identities | Expiry and restore-time deletion reconciliation; no undeclared copies |
 
 Do not write “stored in Foundry” where the true storage or service-managed retention boundary is unknown. Mark the gap and prevent restricted data onboarding until resolved.
+
+Hosted session-per-VM isolation is a compute boundary, not proof of tenant authorization, retention compliance, or deletion. External-code/ephemeral agents have no persisted agent resource but may still create application logs, conversation state, files, tool records, and provider-held data; inventory those stores explicitly.
 
 ### 2. Define a measurable retention schedule
 
@@ -127,6 +132,7 @@ Link [agent registration](../../templates/agent-registration.md), [security revi
 - [Azure Storage security guide](https://learn.microsoft.com/en-us/azure/storage/blobs/security-recommendations).
 - [Azure Monitor log data retention](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/data-retention-configure).
 - [Sensitive trace-content migration](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-sensitive-content) and [model deployment types](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types).
+- [Hosted agents: identity, sessions, and state](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents).
 - Feature/provider verification: [Foundry register](../../references/microsoft-foundry.md), [Azure register](../../references/azure.md).
 
 ## Limitations and unresolved decisions

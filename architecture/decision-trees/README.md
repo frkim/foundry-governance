@@ -204,6 +204,8 @@ Guardrails are additional defenses, not substitutes for user/object authorizatio
 **Evidence:** adverse-content evaluation, unauthorized-action denial, unsupported-path coverage, and documented residual risk.
 Verify guardrail coverage separately for each model, runtime, input/output path, and modality.
 The [new-portal readiness matrix](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga) marks model guardrails GA and agent guardrails Preview; these scoped statuses do not replace application authorization tests.
+An explicit [agent guardrail policy](https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview) replaces, rather than merges with, the model policy. Agent annotate-only, Spotlighting, and groundedness controls are unsupported; tool-call/tool-response guardrails are Preview.
+For [hosted guardrails](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails), omitted configuration provides no hosted content-safety guardrail and an invalid referenced policy can fail open despite active status: require policy-existence and expected-block tests.
 
 ## 12. Foundry vs external observability
 

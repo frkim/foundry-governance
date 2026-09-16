@@ -16,7 +16,7 @@ Traditional API Management can expose supported APIs as MCP tools or proxy suppo
 
 Microsoft documents differ on aspects of external MCP resource support. Until the selected client/server/gateway combination is verified, the enterprise baseline is **approved tools only**: do not depend on resources, prompts, subscriptions, or other protocol capabilities merely because MCP defines them.
 
-Foundry Toolboxes provide a shared MCP-compatible endpoint, with core experience GA and individual features separately scoped. Preview tool search and skills need explicit adoption review; MCP-resource-based skill discovery is not proven by tools-only gateway support. Track default toolbox promotion because consumers may change behavior without redeployment.
+Foundry Toolboxes provide a managed, versioned shared MCP-compatible endpoint for built-in/custom tools. The named **core Toolboxes portal experience is GA** in the [feature-readiness table](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga), not a blanket status for every tool/network/auth/protocol/client combination. Tool search and skills are explicitly **Preview** and need adoption review. Skills support prompt and hosted agents, but MCP-resource-based discovery is not proven by tools-only gateway support. Default promotion updates consumers without redeployment; inventory and regress **all affected consumers**, treating all consumers as affected until version-binding evidence proves otherwise, and retain rollback.
 
 Foundry's APIM tool-governance integration is **Preview** with restricted automatic routing coverage. The dedicated AI Gateway tier is a separate **public Preview** offering with different limitations; see [AI Gateway](../10-ai-gateway/README.md).
 
@@ -60,6 +60,8 @@ Use [MCP registration](../../templates/mcp-registration.md), linking [tool recor
 
 Include network destinations, data classification/retention/geography, inbound authentication, outbound backend identity, OAuth discovery/consent details if used, risk approvals, rate/concurrency/session limits, streaming behavior, SLO, operational contacts, and kill switches.
 
+Register consumers that use external code/Responses API without a persisted agent resource. Identify their application version, workload identity, hosting/network owner, approved tool subset, and trace correlation; absence of an agent resource does not remove MCP trust or authorization requirements.
+
 Do not publish secrets in registry metadata. Restrict who can change endpoints, OAuth client configuration, tool descriptions, or discovery responses; these are security-sensitive supply-chain changes.
 
 ### 2. Separate authentication hops
@@ -79,6 +81,8 @@ Never forward a caller token to an unrelated backend or reuse a gateway's broad 
 ### 3. Enforce per-tool authorization and approval
 
 Restrict the tools visible to each client where supported, and independently deny unauthorized `tools/call` requests at execution. Hidden discovery entries are not authorization: an attacker can request a known name directly.
+
+Preview tool search provides candidate selection, not permission to invoke. Pin immutable specific skill versions and reviewed schemas/digests; neither resource discovery nor a tool-search match grants the skill's transitive tool permissions.
 
 Resolve permissions from authenticated principal, tenant, tool/version, target object, and validated arguments. Use separate backend identities or an authorization-enforcing service when a shared identity would expose too much.
 

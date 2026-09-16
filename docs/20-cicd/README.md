@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: resource-provider/API coverage and immutable version support vary by feature.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -32,7 +32,7 @@ Evaluate before publish and after every meaningful configuration change.
 |---|---|
 | Release identity | Release ID, source commit, artifact digest, build provenance, timestamp |
 | Agent | Stable inventory ID, type, hosting mode, definition/workflow digest |
-| Runtime | SDK/framework versions, lockfile, runtime version, container image digest |
+| Runtime | SDK/framework versions, lockfile, runtime/protocol version, image digest and source-ZIP build provenance if used |
 | Prompt | System/developer instructions and templates by digest/version |
 | Model | Provider, model/version, deployment/type, region, update mode |
 | Tools | Tool IDs, schema/code versions, endpoint policy, allowed operations |
@@ -41,7 +41,7 @@ Evaluate before publish and after every meaningful configuration change.
 | Guardrails | Safety settings, policy bundle, action approval rules, refusal behavior |
 | Data | Source/index snapshot or version, retrieval/chunking/embedding config, ACL policy |
 | Network | Approved routes, private/public access, egress allowlist, DNS policy |
-| Identity | Runtime identity references, role assignments, federation trust configuration |
+| Identity | Separate agent-runtime and project-infrastructure identities, role assignments, federation trust configuration |
 | Consumption | Rate/concurrency/tool/turn/retry limits and allocation policy |
 | Evaluation | Dataset/grader versions, run IDs, results, acceptance decision |
 | Operations | Dashboard/runbook/SLO references, telemetry schema and redaction config |
@@ -91,6 +91,9 @@ Pause if error rate increases by one percentage point or p95 latency rises 20% a
 Also compare task success, unit cost, tenant isolation, and telemetry completeness.
 Do not replay state-changing production traffic into a shadow system with live write tools.
 Use sanitized replay or disabled-write tools for shadow evaluation.
+For hosted agents, require explicit `rai_config`, verify the referenced policy exists, and run an expected-block test against the deployed policy.
+Omission means no hosted content safety; an invalid custom policy can fail open while the agent remains active.
+Neither deployment success nor configuration presence is sufficient evidence of enforcement; failed blocking tests stop promotion.
 
 ### Rollback design
 
@@ -124,6 +127,7 @@ Bind [production readiness](../../checklists/production-readiness.md) and [go-li
 - [Deploy Bicep with GitHub Actions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-github-actions).
 - [Deploy with IaC and GitHub Actions](https://learn.microsoft.com/en-us/devops/deliver/iac-github-actions).
 - [Evaluate agents](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluate-agent).
+- [Hosted guardrail configuration and failure behavior](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails).
 
 Official Learn search results identify supported building blocks; direct retrieval was unavailable.
 The manifest, canary numbers, and promotion gates are proposed enterprise controls, not a shipped pipeline.

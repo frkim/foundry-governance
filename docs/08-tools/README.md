@@ -16,7 +16,9 @@ Native tools, application functions, OpenAPI integrations, MCP servers, and code
 
 A tool may authenticate through a project/agent identity, a stored credential, or user-delegated OAuth where supported. Shared authentication and delegated user access are not interchangeable.
 
-The core **Toolboxes** experience is GA in the current readiness table, providing a shared MCP-compatible endpoint; individual tools/features retain their own status. **Tool search** and **skills** are Preview. Shared default toolbox promotion can change consumer behavior without redeploying each agent, so discovery/default changes are production supply-chain changes.
+**Toolboxes** provide a managed, versioned shared MCP-compatible endpoint for built-in and custom tools. The named **core Toolboxes portal experience is GA** in the [feature-readiness table](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga); this does not establish GA/support for every tool, identity, network, protocol, or client combination. **Tool search** and **skills** are explicitly Preview; skills support both prompt and hosted agents. Promoting a toolbox default updates consumers without redeployment: treat **all consumers as affected** until version-binding evidence proves otherwise. Discovery/default changes are production supply-chain changes.
+
+The **Limited Preview agent optimizer** can propose instructions, skills, tool descriptions, and model selections. It is not a tool-approval or production-release authority. Record optimizer inputs/output versions and reassess changed descriptions, executable skill content, transitive tool rights, and model choices before promotion.
 
 ## Enterprise recommendation
 
@@ -110,7 +112,9 @@ Publish visibility and execution permission separately: private/team/project/bus
 
 Schema additions, changed descriptions, broader OAuth scopes, new destinations, provider changes, and new side effects can change risk even without a major API version. Quarantine unexpected changes; assess consumers before republishing. Pin known-good versions where supported and document compatibility/migration deadlines.
 
-For toolbox default promotion, identify every consumer following the default, evaluate its allowed operations and trajectories, stage the promotion, monitor drift, and retain a tested rollback. Preview tool search must discover only approved capabilities, with independent direct-invocation denials. Skills bring instructions and potentially executable/transitive tool rights; use the [skills governance](../16-skills/README.md) review, not ordinary document approval.
+For toolbox default promotion, inventory **every consumer**, verify version bindings, regress affected operations and trajectories, stage the promotion, monitor drift, and retain a tested rollback. Preview tool search returns candidate selections, **not authorization**; constrain discovery and independently deny unapproved direct invocation. Pin each skill to an immutable **specific version** and reviewed digest, including executable/transitive tool rights; use the [skills governance](../16-skills/README.md) review, not ordinary document approval.
+
+Apply the same review to optimizer-generated candidates: require held-out evaluations of actual tool actions and separate human release approval. Optimizer evaluations **invoke tools** and can produce real charges or mutations; **test endpoints or mocks and separate credentials are required enterprise controls**. Prompt-agent tool-description optimization cannot evaluate actual client-side tool execution, so run separate tool/action tests before approval.
 
 For deprecation, notify owners, prevent new onboarding, migrate consumers, revoke old grants, verify absence of traffic, and remove secrets/routes after retention obligations are met. Retain a tombstone inventory record and incident/approval evidence.
 
@@ -126,6 +130,7 @@ Link evidence to [security review](../../checklists/security-review.md), [produc
 - [Foundry tool governance](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/governance).
 - [Foundry MCP authentication](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/mcp-authentication).
 - [Toolbox overview](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview), [tool search](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/tool-search), and [feature readiness](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga).
+- [Agent optimizer](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-optimizer-overview) and [agent types and skills](https://learn.microsoft.com/en-us/azure/foundry/agents/overview).
 - Capability/status notes: [Foundry](../../references/microsoft-foundry.md), [Azure](../../references/azure.md).
 - Related controls: [MCP](../09-mcp/README.md), [agent security](../07-agent-security/README.md), [human-in-the-loop](../23-human-in-the-loop/README.md).
 

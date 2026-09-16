@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: quota scopes and available gateway policies differ by model and deployment type.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -18,6 +18,11 @@ Provisioned throughput units (PTUs) and pay-as-you-go (PAYG) represent different
 Supported gateway controls can enforce request/token limits for supported routes.
 Azure Cost Management budgets generate notifications; **they do not stop consumption or impose hard caps**.
 Quota availability does not guarantee deployable capacity, service latency, or authorization to spend.
+Distinguish traditional APIM policies from the **preview Foundry APIM integration** and **preview dedicated AI Gateway tier**.
+The preview integration's automatic MCP routing excludes existing/code-first, managed-OAuth, OpenAPI, and native-tool paths.
+It covers eligible newly portal-created MCP tools; prove every required route rather than assuming automatic coverage.
+The dedicated preview tier has no SLA and API-key grants cover all published assets; do not treat keys as per-asset authorization.
+See [AI Gateway](../10-ai-gateway/README.md) and the [source register](../../references/azure.md) for current scope and networking limits.
 
 | Mechanism | What it controls | What it does not guarantee |
 |---|---|---|
@@ -96,6 +101,7 @@ Do not release a reservation until outstanding child/tool work is accounted for 
 | Evaluation/batch | Isolated allocation and scheduling | No starvation of production traffic |
 
 PTU reservation purchase and deployment capacity are related but distinct planning activities.
+A reservation is a financial discount, not a capacity guarantee; establish deployable capacity before committing to the reservation.
 Use current billing terms; idle provisioned capacity may still incur charges.
 Determine break-even through [FinOps](../19-finops/README.md), not assumed universal utilization percentages.
 
@@ -124,6 +130,8 @@ Document gateway bypass tests under [AI Gateway](../10-ai-gateway/README.md) and
 - [Provisioned throughput](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/provisioned-throughput).
 - [Enforce model token limits](https://learn.microsoft.com/en-us/azure/foundry/control-plane/how-to-enforce-limits-models).
 - [Create and manage budgets](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets).
+- [Foundry tool governance and routing scope](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/governance).
+- [Dedicated AI Gateway overview](https://learn.microsoft.com/en-us/azure/api-management/ai-gateway-overview).
 
 Official Learn search results support these distinctions; direct retrieval was unavailable.
 Validate current quota scope and policy support; illustrative limits are not provider defaults.

@@ -64,6 +64,8 @@ For every row record source subnet/runtime, identity, destination FQDN/resource,
 
 Include asynchronous callbacks, tool webhooks, OAuth redirects, browser-based developer access, and background scheduled jobs. A network diagram omitting these paths cannot substantiate isolation.
 
+For hosted deployments, map both container-image delivery and source ZIP-to-image build paths, including registry and build dependency access. For external-code Responses API/ephemeral patterns, the application's hosting environment owns network controls; it does not inherit hosted-agent isolation by calling Foundry. Validate Responses, Invocations, WebSocket, and A2A paths individually where used; protocol support is not gateway or private-network compatibility.
+
 ### 2. Select supported networking deliberately
 
 1. Record actual Foundry resource/project types, agent runtime, region, deployment type, dependencies, and API versions.
@@ -72,6 +74,12 @@ Include asynchronous callbacks, tool webhooks, OAuth redirects, browser-based de
 4. Verify capacity, DNS links/forwarders, address-space overlap, peering/transit, route tables, and firewall integration before enabling public-access restrictions.
 5. Provision through reviewed IaC and retain effective configuration exports. Use Azure Policy where an applicable alias/effect exists; application destination policy still needs runtime enforcement.
 6. Select a different supported runtime/tool or reject the design if the required path cannot meet the boundary; do not silently fall back to public access.
+
+Apply the documented feature-specific exceptions:
+
+- Hosted use of a **private Azure Container Registry requires a project created after 2026-06-25**. Verify project creation date and the actual registry/identity path; do not assume an older project acquires support through a role change alone.
+- The Foundry visual workflow experience supports private **inbound** connectivity, but **outbound VNet injection is unsupported**. It is also Preview with retirement scheduled for 2026-12-01; do not onboard new production dependencies.
+- Documented public web/Bing/SharePoint tool paths remain **public**. A private Foundry endpoint does not privatize them; review data disclosure and egress, or disable the tool when the selected boundary prohibits that public path.
 
 ### 3. Restrict egress and prevent SSRF
 
@@ -114,6 +122,7 @@ Keep timestamped positive/negative connectivity results from the **actual runtim
 ## Sources
 
 - [Agent networking options](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/networking-options).
+- [Configure Foundry network isolation](https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link), including project-age, workflow, and public-tool limitations.
 - [Hosted network egress controls](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails#network-egress-controls-preview).
 - [Azure Private Link overview](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview).
 - [API Management virtual network concepts](https://learn.microsoft.com/en-us/azure/api-management/virtual-network-concepts).

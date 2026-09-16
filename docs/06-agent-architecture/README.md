@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: runtime, region, API, and preview restrictions differ by feature.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -16,11 +16,13 @@ Foundry provides managed agent capabilities and integrations for code-first agen
 Agent type, hosting location, orchestration pattern, and SDK are separate decisions.
 The portal experience is also a separate attribute: **classic does not mean hub-only**.
 Record the actual Azure resource and project type rather than inferring it from screenshots.
+Projects are not universal isolation boundaries; verify the planning guide's feature-specific isolation matrix.
+The networking guide covers **both prompt and hosted agents**; validate BYO/managed VNet options for the exact runtime.
 
 | Dimension | Option | Governance interpretation |
 |---|---|---|
 | Agent type | Prompt agent | Instructions, model, and tools define behavior; verify selected tool availability |
-| Agent type | Hosted agent | Customer code on managed hosting; GA in the reviewed migration comparison, with feature-specific exceptions |
+| Agent type | Hosted agent | Customer code on managed hosting; verify the target offer and feature-level status in the source register |
 | Orchestration experience | Workflow agent/workflow | Foundry visual/declarative workflows are preview; not a third persisted type in the current overview |
 | Deployment boundary | External/custom agent | Runs outside managed Agent Service; discovery or registration does not transfer operational responsibility |
 | Packaging | Containerized agent | Image is a deployable artifact, not a separate reasoning capability or trust guarantee |
@@ -38,6 +40,19 @@ The current overview identifies prompt and hosted persisted types; external Resp
 Ephemeral agents still need application/runtime inventory, identities, versioned instructions, and operational ownership.
 The [source register](../../references/microsoft-foundry.md) records visual workflow retirement scheduled for **2026-12-01**.
 Do not add new production dependencies on that preview; migrate existing uses to tested supported orchestration.
+For new workflow orchestration, follow Microsoft's direction to Microsoft Agent Framework and verify the chosen integration.
+
+### Hosted execution boundaries
+
+Hosted code can be supplied as a container or a source ZIP that is built into an image.
+Pin the resulting image/build provenance; a ZIP upload does not remove software supply-chain duties.
+The runtime's dedicated agent identity is distinct from the project managed identity used for infrastructure such as ACR.
+Authorize and audit each identity separately; neither automatically preserves the original user's data entitlement.
+The reviewed hosted guide describes per-session VM isolation, with `$HOME`/file content persisting while compute is idle.
+Conversation history persists separately, and an application state store has its own lifecycle.
+Idling compute is not deletion: inventory and govern retention, access, backup, and erasure for every state surface.
+Document protocol compatibility separately from agent type: Responses, Invocations, and WebSocket require target validation.
+The reviewed hosted guide explicitly labels A2A v1.0 GA and v0.3 Preview; do not generalize those labels to hosted features.
 
 ## Enterprise recommendation
 
@@ -107,6 +122,8 @@ Test cycles, missing agents, partial completion, stale state, and malicious tool
 ### Hosting acceptance
 
 For managed hosting, verify supported regions, protocols, networking, state retention, and identity.
+Test isolation and deletion across session files, conversations, checkpoints, and external state rather than assuming shared semantics.
+Do not draw a gateway-mediated call without configuring and testing that exact route, including bypass denial.
 For containers, pin image digests and review image provenance, vulnerability posture, and patch ownership.
 For external agents, require contractual telemetry, incident notification, deletion, and availability commitments.
 Do not assume container isolation alone prevents data exfiltration or excessive tool authority.
@@ -131,6 +148,8 @@ Complete [architecture review](../../checklists/architecture-review.md) and [sec
 - [LangGraph integration](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/langchain-agents).
 - [Hosted-agent migration guidance](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/migrate-hosted-agent-preview).
 - [Current migration/status comparison](https://learn.microsoft.com/en-us/azure/foundry/how-to/navigate-from-classic).
+- [Prompt and hosted networking options](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/networking-options).
+- [Resource/project planning and isolation](https://learn.microsoft.com/en-us/azure/foundry/concepts/planning).
 
 Official Learn search and the repository's primary-source register support these distinctions; direct Learn retrieval was unavailable.
 Workflow and hosted-agent lifecycle information is change-sensitive; verify current notices before committing a design.

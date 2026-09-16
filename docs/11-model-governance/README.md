@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: provider terms, processing geography, versions, and deployment options differ.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -30,6 +30,10 @@ Do not apply Azure OpenAI-specific guarantees to every partner or externally hos
 An application using an approved SDK can still call an unapproved model.
 Consult the [status register](../../references/microsoft-foundry.md) for model geography and provider-specific data-handling limits.
 An Azure resource region alone does not establish inference-processing locality for every deployment type.
+Current deployment guidance allows Standard/Regional Provisioned processing across multiple regions within an Azure **geography**.
+Data-zone choices are model-dependent; US/EU/APAC availability and an EU boundary that can include EFTA require explicit review.
+Where older PTU guidance suggests a narrower boundary, use the broader documented bound until the provider confirms the required restriction.
+Privacy assurances for **Models sold by Azure** do not automatically cover every catalog offer, including provider-hosted Anthropic arrangements.
 
 ## Enterprise recommendation
 
@@ -126,6 +130,8 @@ Use the [model registration](../../templates/model-registration.md) and [go-live
 - [Model lifecycle and support policy](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirements).
 - [Model retirement schedule](https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirement-schedule).
 - [Foundry Models quotas and limits](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/quotas-limits).
+- [Current model deployment types and processing boundaries](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types).
+- [Model data, privacy, and security](https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy).
 
 Source URLs were identified through official Learn search results; direct retrieval was unavailable.
 Review current provider terms and region-specific deployment documentation before approval.

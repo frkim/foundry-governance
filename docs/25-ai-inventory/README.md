@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: native discovery and registry integrations do not guarantee complete enterprise coverage.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -17,11 +17,17 @@ Microsoft documents Foundry integration with Agent 365 for agent governance/regi
 Coverage, synchronization, licensing, tenant configuration, and feature status require validation.
 Azure resource discovery alone does not reveal every prompt, tool permission, external agent, or data flow.
 Maintain a customer-owned authoritative inventory even when native registries supply discovery inputs.
+Foundry Control Plane/Operate is a **Preview, currently portal-only** option for cross-project subscription fleet views and supported external assets.
+Reconcile its agents/models/tools with the authoritative inventory; validate access, integration configuration, freshness, and coverage.
+Do not assume complete automatic discovery, available automation APIs, or enforcement from portal visibility.
 
 ## Enterprise recommendation
 
 Register every AI system before production, including embedded, external, custom, container, and multi-agent systems.
+External Responses API “ephemeral agents” may have no persisted agent resource; register the application and execution dependencies.
 Use stable inventory IDs independent of mutable deployment names and portal URLs.
+Explicit asset record types include **agents, models, model deployments, tools, MCP servers, skills, data sources, guardrails, gateways, and APIs**.
+Business systems, release artifacts, and runtime/state resources may have supporting records linked to those assets.
 Separate business system, logical agent, released artifact, and running deployment records.
 Track agent type, hosting, and SDK/framework separately.
 Represent dependencies as versioned directed relationships with owners and evidence.
@@ -33,7 +39,7 @@ Represent dependencies as versioned directed relationships with owners and evide
 | Record identity | Inventory ID, schema version, record type, parent system ID, creation/update timestamps |
 | Business purpose | Name, description, intended/prohibited use, business process, success metrics |
 | Accountability | Business owner, technical owner, data owner, risk owner, operations contact, cost owner |
-| Lifecycle | Proposed/sandbox/approved/production/suspended/retiring/retired, effective dates, reason |
+| Lifecycle | Canonical `lifecycle_state`: draft, registered, assessed, approved, active, suspended, retired; effective dates and reason |
 | Environment | Development/test/production, tenant, subscription, resource group, resource/project IDs |
 | Experience | Portal experience separately from Foundry resource/project or hub/project type |
 | Agent design | Persisted prompt/hosted type or not applicable; workflow/composition pattern, hosting boundary, container/external flag, autonomy |
@@ -41,9 +47,9 @@ Represent dependencies as versioned directed relationships with owners and evide
 | Release | Source repository/commit, artifact/image digest, immutable manifest, deployment ID/version |
 | Model | Provider, model/version, modality, deployment/type, endpoint, region, upgrade mode |
 | Data | Sources, indexes, embeddings, classifications, purpose, lineage, ACLs, refresh, retention/deletion |
-| State | Conversation/memory/checkpoint stores, tenant isolation, retention, backup/RPO, deletion owner |
-| Identity | Runtime/caller identities, auth method, roles/scopes, downstream authorization, review date |
-| Tools | Tool IDs, operations, schemas/versions, endpoints, read/write, owner, data/permission scope |
+| State | Separate hosted session files, conversation history, memory/checkpoints and application state stores; isolation, retention, backup/RPO, deletion owner |
+| Identity | Separate agent-runtime, project-infrastructure and caller identities; auth method, roles/scopes, downstream authorization, review date |
+| Tools | Tool/Toolbox IDs, operations, schemas/versions/default promotion, endpoints, read/write, owner, data/permission scope |
 | MCP | Server IDs, transport, endpoints, capability/schema snapshots, auth scopes, approvals |
 | Skills | Skill IDs, versions/digests, provenance, dependencies, permissions, consumer attachments |
 | Agent graph | Parent/child/peer agents, handoff schemas, trust boundaries, fan-out/depth/run budgets |
@@ -53,13 +59,16 @@ Represent dependencies as versioned directed relationships with owners and evide
 | Quality | Golden-set/evaluator versions, evaluation runs/results, thresholds, known limitations |
 | Observability | Telemetry destinations, schema, redaction, retention, dashboards, alerts, audit store |
 | Operations | Service hours, SLO/SLA, on-call, runbooks, RTO/RPO, kill switch, recovery test |
-| Sharing | Sharing level, consumers/tenants/channels, authoring versus invocation access, approvals |
+| Sharing | Reuse level (Private/Project/Business Unit/Enterprise), separate publication audience/channels, consumers/tenants, authoring versus invocation access, approvals |
 | Economics | Cost center, budget owner/period/amount/currency, unit-cost target, limits, PAYG/PTU, allocation |
 | Governance | Approvals, exceptions/expiry, control evidence, review cadence, next attestation |
 | Lifecycle dependencies | Retirement dates/source, replacement, migration owner, consumer notice |
 | Retirement evidence | Traffic stop, revocation, deletion/hold, billing closure, evidence archive, completion |
 
 Use explicit “not applicable” with justification; unknown required fields block production approval.
+Lifecycle and environment are separate: production is an environment, not a lifecycle state.
+Use the canonical field names and lifecycle values in the [metadata standards](../../governance/standards/README.md).
+Track retirement-in-progress in the change/retirement record; retain the applicable canonical state until transition to retired.
 Store protected evidence references, not credentials, raw personal data, or full sensitive prompts.
 An external supplier's unknown model version is a recorded limitation requiring a risk decision.
 
@@ -134,6 +143,7 @@ Start with [agent registration](../../templates/agent-registration.md); verify c
 - [Agent applications](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/agent-applications).
 - [Agent 365 integration](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-365-integration).
 - [Govern agents across the organization](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai-agents/governance-security-across-organization).
+- [Foundry Control Plane — Preview](https://learn.microsoft.com/en-us/azure/foundry/control-plane/overview).
 
 Official Learn search results identify discovery/governance integration; direct retrieval was unavailable.
 The schema and reconciliation process are enterprise requirements, not a claim of native automatic coverage.

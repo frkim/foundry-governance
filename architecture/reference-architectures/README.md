@@ -125,7 +125,8 @@ flowchart LR
 The current [networking guide](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/networking-options) covers both prompt and hosted agents; do not assume hosted agents categorically lack private-network options.
 The reviewed hosted guidance describes per-session VM isolation and `$HOME/files` persistence while idle; conversations persist separately, and a state store has its own lifecycle. Idle/session handling is not proof that every copy was deleted.
 Reviewed protocols include Responses, Invocations, and WebSocket; A2A v1.0 is explicitly GA and v0.3 Preview in the protocol guidance. These narrow statuses do **not** establish a blanket hosted-agent GA designation; verify the selected protocol/region combination.
-**Acceptance evidence:** dependency review, infrastructure/runtime identity-denial tests, unauthorized-egress denial, separate state-retention/deletion checks, timeout behavior, and rollback rehearsal.
+[Hosted agent guardrails (Preview)](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails) require explicit attachment: omitted configuration provides no hosted content-safety guardrail, and an invalid referenced policy can fail open despite active agent status. Confirm the intended policy exists and blocks expected test cases.
+**Acceptance evidence:** dependency review, infrastructure/runtime identity-denial tests, guardrail policy-existence and expected-block tests, unauthorized-egress denial, separate state-retention/deletion checks, timeout behavior, and rollback rehearsal.
 **Design continuation:** [hosting choice](../decision-trees/README.md#2-foundry-vs-external-hosting), [network security](../../docs/04-network-security/README.md), and [CI/CD](../../docs/20-cicd/README.md); external hosting is a separate operational choice.
 
 ## 4. Multi-agent

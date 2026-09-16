@@ -10,13 +10,19 @@ Exceptions: [exception request](../../templates/exception-request.md); metadata 
 
 ## Microsoft capability
 
+The current Agent Service overview names **two persisted agent types: prompt and hosted**. External code can use the Responses API as an **ephemeral agent without an agent resource**. Workflow remains an orchestration pattern or separately scoped experience, not a third current top-level persisted type. Register and threat-model every pattern, including resource-less applications and their tools.
+
+The Foundry visual **“Build a workflow” experience is Preview, with retirement scheduled for 2026-12-01**. Do not onboard new production dependencies on that experience. Inventory existing workflows and migrate with security/approval/state regression evidence; Microsoft directs new workflows to **Microsoft Agent Framework**, whose selected package/hosting combination still requires verification. This does not retire workflow orchestration as a pattern.
+
 Foundry and Azure offer combinations of model safety controls, agent runtimes, identities, networking, monitoring, and gateway integrations. Availability depends on the model, runtime, API, deployment type, and region. Some newer agent governance and guardrail features are Preview; require explicit adoption gates rather than labelling all agents GA or Preview.
 
 Prompt Shields/content safety features can identify supported harmful or injection-related patterns. They do not provide application authorization or guarantee that every indirect instruction is detected. An agent can obey an apparently benign request and still perform an unauthorized business action.
 
-Prompt and hosted agents have documented networking options. Hosted execution and application-hosted agents also require review of code, dependencies, process/container privileges, resource limits, and patch responsibilities; managed hosting does not remove workload security ownership.
+Prompt and hosted agents have documented networking options. Hosted deployment can use a container or source ZIP built into an image; both require reviewed source/build provenance, dependencies, runtime privileges, resource limits, and patch ownership. Session-per-VM isolation and persistent session files do not establish data authorization or deletion. Managed hosting does not remove workload security ownership.
 
-Model guardrails are **GA** and agent guardrails **Preview** in the reviewed feature matrix. An explicit agent policy replaces rather than merges with the model policy; agent annotate-only, Spotlighting, and groundedness controls are unsupported. Hosted agents require explicit `rai_config` attachment, and invalid policy IDs can fail open despite active status. Verify policy existence/validity and actual expected blocking before release; see [guardrails](../15-guardrails/README.md).
+Hosted endpoint families include Responses, Invocations, WebSocket, and A2A. The reviewed source explicitly labels **A2A v1.0 GA** and **v0.3 Preview**; do not transfer either status to all hosted capabilities. Threat-model authentication, delegation, cancellation, replay, streaming, and tool side effects for each selected protocol.
+
+Model guardrails are **GA** and agent guardrails **Preview** in the reviewed feature matrix. An explicit agent policy replaces rather than merges with the model policy; agent annotate-only, Spotlighting, and groundedness controls are unsupported. Omitting hosted `rai_config` means **no content safety**; providing it without a policy selects the default. Custom policies require their **full ARM resource ID**. Missing/invalid policy IDs can fail open despite active status: verify policy existence/validity and actual expected blocking before release; see [guardrails](../15-guardrails/README.md) and the [security checklist](../../checklists/security-review.md).
 
 ## Enterprise recommendation
 
@@ -95,6 +101,8 @@ Scope child-agent permissions to the initiating task's approved authority. Restr
 
 For code-capable agents, control artifact provenance, runtime privilege, filesystem mounts, outbound destinations, resource limits, and persistence. Do not allow generated code to retrieve deployment secrets or administer its hosting environment.
 
+The **Limited Preview agent optimizer** can propose instructions, skills, tool descriptions, and model selections. Treat proposals as untrusted candidate changes: review permitted authority, provenance, data disclosure, and model eligibility; run held-out trajectory/action evaluations and independent release approval. Optimizer evaluations invoke tools and can incur real charges or mutate state: use test endpoints or mocks and separate credentials. Prompt-agent tool-description optimization cannot evaluate actual client-side tool execution; require separate tool/action tests.
+
 ### 5. Design containment before go-live
 
 | Switch | Enforcer / owner | Verification |
@@ -117,6 +125,8 @@ Track test coverage by threat and enforcement point, with residual false-negativ
 ## Sources
 
 - [Foundry agent documentation](https://learn.microsoft.com/en-us/azure/foundry/agents/overview).
+- [Hosted agents and protocols](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents) and [Preview agent optimizer](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-optimizer-overview).
+- [Visual workflow Preview and retirement notice](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow).
 - [Prompt Shields concepts](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection).
 - [Agent networking options](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/networking-options).
 - [Foundry tool governance](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/governance).

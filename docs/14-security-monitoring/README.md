@@ -18,7 +18,7 @@ Content safety decisions are valuable security signals, but they do not prove th
 
 Current readiness guidance lists prompt/hosted tracing as GA, with workflow/external tracing and tracing VNet Preview. Named Foundry monitoring, recurring evaluation, scheduled red-team scans, and alerts are **Preview**; continuous evaluation observes sampled completed responses, not inline prevention. Entra-authenticated trace ingestion is also Preview and requires verified publisher permissions for project/server-side and agent/sandbox paths separately.
 
-Foundry Control Plane/Operate features are **Preview** and described as portal-only in the reviewed source. Assess supported fleet views, external-agent inventory, and Defender/Purview/Entra integrations against actual subscription scope, roles, and connectors. Do not assume complete discovery, automatic SOC coverage, or an available automation API.
+Foundry Control Plane/Operate is a **Preview implementation option**, currently portal-only in the reviewed source, for fleet views of agents, models, and tools across projects within a subscription, supported external agents/metrics, and Defender/Purview/Entra integrations. Verify subscription/project coverage, portal access, and each connector. It is not complete automatic discovery, proof of control enforcement, automatic SOC coverage, or an assumed automation API.
 
 ## Enterprise recommendation
 
@@ -71,6 +71,10 @@ The following are **enterprise logical fields**, to be emitted or mapped; they a
 | Integrity | Schema/version digest, source provenance, detection/enforcement location, instrumentation version |
 
 Use trusted middleware to set identities and attribution; model text or arbitrary headers cannot be the authority. Preserve correlation across asynchronous queues and multi-agent delegation. Avoid hashing low-entropy personal identifiers without a privacy-reviewed pseudonymization design.
+
+For external-code Responses API/ephemeral agents, use stable application/workload and release IDs even though no persisted agent resource exists. Inventory endpoint/protocol families separately; Responses, Invocations, WebSocket, and A2A traffic need their own coverage proof. Do not let a missing agent-resource ID exclude application-hosted activity from SOC scope.
+
+If adopting Control Plane, assign an integration owner to reconcile its fleet view against the authoritative inventory and actual application/backend traffic. Record missing assets/signals, verify connector access and redaction before export, and retain application authorization/telemetry tests and owned evidence; dashboard presence does not close a coverage gap.
 
 ### 2. Implement prioritized detections
 

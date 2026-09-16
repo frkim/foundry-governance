@@ -6,7 +6,7 @@
 > Capability status: feature-specific; see sources; unverified availability requires validation.
 > Recommendation: proposed enterprise baseline.
 > Limitations: automatic instrumentation and content capture differ by framework and service.
-> Exceptions: time-bound approval via ../../templates/exception-request.md.
+> Exceptions: time-bound approval via [exception request](../../templates/exception-request.md).
 
 This metadata applies to every recommendation below unless explicitly overridden.
 
@@ -18,9 +18,13 @@ Azure Monitor supports querying, alerting, dashboards, and operational analysis.
 Microsoft Sentinel can correlate security events through supported connectors or explicit ingestion.
 External APM/SIEM platforms can receive approved telemetry through compatible exporters and collectors.
 Neither registration in Foundry nor an SDK dependency guarantees end-to-end instrumentation.
-The [status register](../../references/microsoft-foundry.md) distinguishes GA prompt/hosted tracing from preview workflow/external tracing.
-The named Foundry monitoring, recurring evaluation, and alerts experiences are preview; Azure Monitor capabilities have their own scope.
+The [status register](../../references/microsoft-foundry.md) distinguishes GA prompt/hosted tracing from preview workflow/external and VNet tracing.
+The named Foundry monitoring, recurring evaluation, scheduled red-team scans, and alerts experiences are preview; Azure Monitor capabilities have their own scope.
 Sensitive trace-content access protection is also preview and **is not redaction**.
+Entra-authenticated trace ingestion is **Preview**; verify publisher grants separately for project-identity server traces and hosted agent sandbox traces.
+Foundry Control Plane/Operate is a **Preview, currently portal-only** fleet-view option spanning supported agents/models/tools across projects.
+It documents subscription-scoped views, supported external agents, metrics, and Defender/Purview/Entra integrations.
+Verify scope, access, connector configuration, and redacted signal coverage; a visible asset does not prove monitoring or enforcement.
 
 ## Enterprise recommendation
 
@@ -108,7 +112,8 @@ Enforce deletion across primary storage, exports, and diagnostic snapshots.
 Test redaction with seeded synthetic identifiers and credentials before production.
 Review the documented **2026-09-30** sensitive-content routing change before adopting current defaults.
 Protect `AppGenAIContent`; review copies in ordinary tables, historical records, privileged roles, and export destinations.
-Until the documented cutover, ordinary-table copies may remain unless early migration is enabled.
+Until the documented cutover, the default duplicates sensitive attributes into ordinary tables and the protected table unless early migration is enabled.
+Historical ordinary-table copies remain; enforce their access and retention independently of the new routing.
 Verify actual tenant behavior and update queries/alerts; table access controls do not justify logging raw PII.
 
 ### Alert delivery
@@ -135,6 +140,8 @@ Complete the telemetry/alert portions of [production readiness](../../checklists
 - [Framework tracing](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-agent-framework).
 - [Application Insights agents view](https://learn.microsoft.com/en-us/azure/azure-monitor/app/agents-view).
 - [Sensitive trace-content access and migration](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-sensitive-content).
+- [Foundry Control Plane — Preview](https://learn.microsoft.com/en-us/azure/foundry/control-plane/overview).
+- [Entra-authenticated trace ingestion — Preview](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-ingestion-entra-authentication).
 
 Official Learn search results substantiate tracing/Monitor integration; direct retrieval was unavailable.
 Sentinel/external ingestion is an enterprise integration design requiring connector and region validation.
