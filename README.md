@@ -26,6 +26,14 @@ An opinionated enterprise framework for architects, security and data teams, pla
 
 These findings refine the original issue rather than freezing outdated terminology into the framework. See the source register for exact scope, references, and uncertainty.
 
+## Presentation
+
+- [View the presentation on GitHub Pages](https://frkim.github.io/foundry-governance/) (available after the first successful default-branch deployment).
+- [Edit the Marp source](presentation/slides.md) or [view build and deployment runs](https://github.com/frkim/foundry-governance/actions/workflows/presentation-pages.yml).
+- Build locally with `npm ci --ignore-scripts`, `npm run build`, and `npm test` using Node.js 22.12 or newer; open the generated `_site/index.html`.
+
+The workflow validates presentation changes on branches and pull requests, and publishes only from the default branch. See [presentation maintenance and Pages setup](CONTRIBUTING.md#presentation-and-github-pages) for first-time configuration and manual runs.
+
 ## Governance domains
 
 | Domain | Decisions and outputs |
@@ -109,7 +117,7 @@ These are **enterprise implementation milestones**, not claims that this reposit
 | 4 · Scale | Governed gateway/MCP, sharing, skills, quotas, FinOps | Measured tenant isolation, attribution, capacity controls |
 | 5 · Enterprise governance | Compliance, fleet controls, continuous evaluation, remediation | Auditable coverage, maturity assessment, tested automation |
 
-The bootstrap supplies guidance for all phases. Deployment automation, continuous policy enforcement, fleet dashboards, and verified workload-specific configurations remain adoption work—not shipped capabilities.
+The bootstrap supplies guidance for all phases. AI workload deployment automation, continuous policy enforcement, fleet dashboards, and verified workload-specific configurations remain adoption work—not shipped capabilities. The presentation's GitHub Pages publishing workflow does not deploy Azure resources or enforce governance controls.
 
 ## Maintenance and contribution
 

@@ -45,7 +45,7 @@ In a change request record: previous claim, new claim, source, affected assets, 
 
 ## Documentation validation
 
-There is no build, lint, test suite, or deployment automation in the initial repository. Documentation-only changes do not require installing a new toolchain.
+Governance documentation has no dedicated lint or test suite. Prose-only changes outside the presentation do not require installing the presentation toolchain.
 
 - Review changed files and run `git diff --check` from the repository root.
 - Follow relative links and heading anchors in GitHub; check case-sensitive paths and the README's 25-question coverage.
@@ -57,6 +57,40 @@ There is no build, lint, test suite, or deployment automation in the initial rep
 - Review for secrets, personal data, sensitive prompt/trace content, and unsafe examples before committing.
 
 For future executable contributions, use the repository's then-existing test infrastructure and include validation of allow/deny paths, failure modes, and rollback. Do not label design examples as deployable until actually validated.
+
+## Presentation and GitHub Pages
+
+The [Marp deck](presentation/slides.md) summarizes the framework; keep detailed policy and capability claims in their authoritative chapters and source registers. Update the deck when its summary is affected. Keep slides short, retain the proposed-policy disclaimer and dated source reference, and use absolute GitHub links for repository documents: repository-relative Markdown links would break on the published site. The generated site contains only the presentation, not the full documentation.
+
+### Local build and checks
+
+Use Node.js **22.12 or newer** (CI uses Node.js 22). From the repository root:
+
+```sh
+npm ci --ignore-scripts
+npm run build
+npm test
+npm audit --audit-level=moderate
+```
+
+Open `_site/index.html` in a browser. Check slide layout, arrow-key navigation, document links, presenter mode, and print preview. The build embeds styles and navigation JavaScript, needs no browser installation, and disables raw Markdown HTML. Keep assets embedded rather than depending on third-party fonts, scripts, or images. Marp does not render Mermaid fences as diagrams automatically.
+
+`npm test` uses Node's built-in test runner to check the **previously built HTML**: slide count and headings, canonical controls, embedded assets, and repository link targets. Run the build first. Generated `_site/` output and `node_modules/` are ignored; commit the source, package manifest, and lockfile, not generated HTML.
+
+Marp CLI is pinned, and `npm ci --ignore-scripts` installs the lockfile without dependency lifecycle scripts. The scoped npm overrides select patched `@puppeteer/browsers` and `@xmldom/xmldom` releases instead of vulnerable transitive versions. Review these overrides when upgrading Marp and remove them once its dependency chain supplies safe versions; repeat the build, tests, browser checks, and audit after updates. Do not use `npm audit fix --force` blindly.
+
+### Publishing and first-time setup
+
+1. In **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. A repository administrator must do this; the workflow deliberately does not grant itself administration permissions or use a personal access token.
+2. Allow the default branch (`main` here) in the **github-pages** environment's deployment rules. Keep any required reviewer protections and approve deployments when requested.
+3. Merge the presentation and workflow into the default branch through normal review. Relevant pushes there publish automatically. The **Presentation Pages** workflow can also be run from **Actions → Run workflow** after it is available on the default branch.
+4. Open the deployment URL shown by the workflow. For this repository the expected URL, absent a custom domain, is **https://frkim.github.io/foundry-governance/**.
+
+The workflow builds on relevant branch pushes and pull requests, uploads a Pages artifact, and **never deploys pull requests or non-default branches**, including manual runs from those branches. Only the deployment job receives `pages: write` and `id-token: write`; builds have read-only repository access. Actions are pinned to commit SHAs. Deployments are serialized without canceling an active deployment.
+
+After publishing, the workflow fetches the live URL over HTTPS and compares its SHA-256 digest with the built HTML, retrying while the site propagates. A green build with a skipped deployment is **not** proof that Pages is published. First-run PR workflows may need maintainer approval under repository Actions policy. If manual dispatch is unavailable before merge, inspect the branch/PR build and complete first publication after the default-branch merge; do not weaken environment protections or publish unreviewed branch content as a workaround.
+
+References: [Marp CLI](https://github.com/marp-team/marp-cli), [custom GitHub Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), and [manual workflow runs](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow).
 
 ## Content conventions
 
