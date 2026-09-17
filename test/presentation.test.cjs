@@ -5,7 +5,7 @@ const { test } = require('node:test');
 
 const root = path.resolve(__dirname, '..');
 const source = readFileSync(path.join(root, 'presentation/slides.md'), 'utf8');
-const html = readFileSync(path.join(root, '_site/index.html'), 'utf8');
+const html = readFileSync(path.join(root, '_site/presentation/index.html'), 'utf8');
 const slides = [...html.matchAll(/<section\b[^>]*>[\s\S]*?<\/section>/g)];
 
 test('build produces a titled English HTML deck with every source slide', () => {

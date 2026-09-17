@@ -2,13 +2,18 @@
   "name": "foundry-governance",
   "version": "1.0.0",
   "private": true,
-  "description": "Microsoft Foundry enterprise governance presentation",
+  "description": "Microsoft Foundry enterprise governance documentation and presentation",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "build": "marp presentation/slides.md --output _site/index.html --no-html",
-    "test": "node --test"
+    "build": "npm run build:docs && npm run build:presentation",
+    "stage:docs": "rm -rf _docs && mkdir _docs && cp README.md CONTRIBUTING.md LICENSE _docs/ && cp -R docs architecture governance checklists templates examples references _docs/ && mkdir -p _docs/assets/javascripts && cp node_modules/mermaid/dist/mermaid.min.js _docs/assets/javascripts/mermaid.min.js",
+    "build:docs": "npm run stage:docs && python -m mkdocs build --strict",
+    "build:presentation": "marp presentation/slides.md --output _site/presentation/index.html --no-html",
+    "test": "node --test",
+    "test:presentation": "node --test test/presentation.test.cjs",
+    "test:docs": "node --test test/docs.test.cjs"
   },
   "repository": {
     "type": "git",
@@ -16,7 +21,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@marp-team/marp-cli": "4.5.1"
+    "@marp-team/marp-cli": "4.5.1",
+    "mermaid": "11.17.2"
   },
   "overrides": {
     "puppeteer-core": {

@@ -19,6 +19,8 @@ mono_crash.*
 
 # Build results
 /_site/
+/_docs/
+/.venv/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
