@@ -94,6 +94,7 @@ jobs:
             fi
             verified=false
             for attempt in {1..6}; do
+              echo "Verifying published $target (attempt $attempt/6)"
               if curl --fail --silent --show-error --location \
                 --proto '=https' --proto-redir '=https' --max-time 30 \
                 "${PAGE_URL%/}/${target}?revision=${GITHUB_SHA}" --output "$published" &&
