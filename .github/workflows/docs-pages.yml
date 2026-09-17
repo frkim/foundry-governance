@@ -71,7 +71,7 @@ jobs:
       pages: write
       id-token: write
     concurrency:
-      group: presentation-pages
+      group: github-pages
       cancel-in-progress: false
     environment:
       name: github-pages
