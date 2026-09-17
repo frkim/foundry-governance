@@ -78,7 +78,7 @@ npm test
 npm audit --audit-level=moderate
 ```
 
-Preview the combined site with `python -m http.server 8000 --directory _site` and open **http://localhost:8000/** for documentation or **http://localhost:8000/presentation/** for slides. The navigation's absolute presentation link targets the published site; use the local URL while previewing. Check documentation navigation, search, Mermaid diagrams, and links from nested chapters. Material provides Mermaid rendering; diagrams require access to its Mermaid CDN.
+Preview the combined site with `python -m http.server 8000 --directory _site` and open **http://localhost:8000/** for documentation or **http://localhost:8000/presentation/** for slides. The navigation's absolute presentation link targets the published site; use the local URL while previewing. Check documentation navigation, search, Mermaid diagrams, and links from nested chapters. Material renders Mermaid fences in the browser; staging copies the pinned Mermaid bundle from `node_modules/` to `_docs/assets/javascripts/`, so the published site loads it from its own origin instead of Material's default CDN and diagrams also render on networks that block third-party scripts. Node.js dependencies must therefore be installed before building documentation.
 
 For documentation-only work, run `npm run build:docs`; for live documentation preview, run `npm run stage:docs` followed by `python -m mkdocs serve`. Re-stage after editing repository sources. For presentation-only work, run `npm run build:presentation` and `npm run test:presentation` without installing Python dependencies. `npm run build` builds documentation **before** slides because MkDocs cleans `_site/`.
 
@@ -86,7 +86,7 @@ Check slide layout, arrow-key navigation, document links, presenter mode, and pr
 
 `npm test` uses Node's built-in test runner to check the **previously built combined site**: documentation coverage/navigation/search, project-path links and anchors, slide count and headings, canonical controls, embedded presentation assets, and repository link targets. Run the full build first; `npm run test:docs` also needs both outputs to verify the presentation link. Generated `_docs/`, `_site/`, `.venv/`, and `node_modules/` are ignored; commit source and dependency manifests, not generated HTML.
 
-Marp CLI is pinned, and `npm ci --ignore-scripts` installs the lockfile without dependency lifecycle scripts. The scoped npm overrides select patched `@puppeteer/browsers` and `@xmldom/xmldom` releases instead of vulnerable transitive versions. Review these overrides when upgrading Marp and remove them once its dependency chain supplies safe versions; repeat the build, tests, browser checks, and audit after updates. Do not use `npm audit fix --force` blindly.
+Marp CLI and Mermaid are pinned, and `npm ci --ignore-scripts` installs the lockfile without dependency lifecycle scripts. The scoped npm overrides select patched `@puppeteer/browsers` and `@xmldom/xmldom` releases instead of vulnerable transitive versions. Review these overrides when upgrading Marp and remove them once its dependency chain supplies safe versions; when upgrading Mermaid, keep the major version supported by the installed Material for MkDocs release. Repeat the build, tests, browser checks, and audit after updates. Do not use `npm audit fix --force` blindly.
 
 ### Publishing and first-time setup
 

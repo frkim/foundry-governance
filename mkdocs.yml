@@ -21,6 +21,9 @@ theme:
 plugins:
   - search
 
+extra_javascript:
+  - assets/javascripts/mermaid.min.js
+
 markdown_extensions:
   - tables
   - toc:

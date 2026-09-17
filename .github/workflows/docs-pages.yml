@@ -38,6 +38,8 @@ jobs:
           python-version: '3.12'
       - name: Install documentation dependencies
         run: python -m pip install -r requirements-docs.txt
+      - name: Install Node.js dependencies
+        run: npm ci --ignore-scripts
       - name: Build documentation
         run: npm run build:docs
       - name: Download presentation from this run

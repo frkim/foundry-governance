@@ -61,6 +61,20 @@ test('generated documentation links, anchors, and assets resolve under the Pages
   }
 });
 
+test('documentation loads only self-hosted assets, including Mermaid', () => {
+  assert.ok(existsSync(path.join(site, 'assets/javascripts/mermaid.min.js')));
+  for (const source of sources) {
+    const html = readFileSync(path.join(site, pagePath(source)), 'utf8');
+    for (const [, script] of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)) {
+      assert.ok(!/^(?:https?:)?\/\//.test(script), `External script: ${script} in ${source}`);
+    }
+    if (html.includes('class="mermaid"')) {
+      assert.match(html, /<script\b[^>]*\bsrc="[^"]*assets\/javascripts\/mermaid\.min\.js"/,
+        `Missing self-hosted Mermaid on ${source}`);
+    }
+  }
+});
+
 test('Mermaid diagrams are enabled and repository build inputs are not published', () => {
   const architecture = readFileSync(path.join(site, 'architecture/reference-architectures/index.html'), 'utf8');
   const source = readFileSync(path.join(root, 'architecture/reference-architectures/README.md'), 'utf8');
