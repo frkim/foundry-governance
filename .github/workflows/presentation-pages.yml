@@ -1,21 +1,7 @@
-name: Presentation Pages
+name: Build Presentation
 
 on:
-  push:
-    branches: ['**']
-    paths:
-      - 'presentation/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'test/presentation.test.cjs'
-      - '.github/workflows/presentation-pages.yml'
-  pull_request:
-    paths:
-      - 'presentation/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'test/presentation.test.cjs'
-      - '.github/workflows/presentation-pages.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -26,8 +12,6 @@ jobs:
     name: Build and validate deck
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    outputs:
-      html_sha256: ${{ steps.digest.outputs.html_sha256 }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -43,55 +27,12 @@ jobs:
       - name: Check dependency advisories
         run: npm audit --audit-level=moderate
       - name: Build presentation
-        run: npm run build
+        run: npm run build:presentation
       - name: Test presentation
-        run: npm test
-      - name: Record HTML digest
-        id: digest
-        run: echo "html_sha256=$(sha256sum _site/index.html | cut -d ' ' -f1)" >> "$GITHUB_OUTPUT"
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        run: npm run test:presentation
+      - name: Upload presentation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          path: _site
-
-  deploy:
-    name: Deploy and verify Pages
-    needs: build
-    if: >-
-      github.event_name != 'pull_request' &&
-      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      pages: write
-      id-token: write
-    concurrency:
-      group: presentation-pages
-      cancel-in-progress: false
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Configure Pages
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - name: Deploy Pages
-        id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
-      - name: Verify published deck matches the build
-        env:
-          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
-          EXPECTED_SHA256: ${{ needs.build.outputs.html_sha256 }}
-        run: |
-          published="$RUNNER_TEMP/published-index.html"
-          for attempt in {1..6}; do
-            if curl --fail --silent --show-error --location \
-              --proto '=https' --proto-redir '=https' --max-time 30 \
-              "${PAGE_URL}?revision=${GITHUB_SHA}" --output "$published" &&
-              echo "$EXPECTED_SHA256  $published" | sha256sum --check --status; then
-              echo "Published deck verified: $PAGE_URL"
-              exit 0
-            fi
-            sleep 10
-          done
-          echo "::error::Published deck did not match the built HTML."
-          exit 1
+          name: presentation
+          path: _site/presentation
+          if-no-files-found: error

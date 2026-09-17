@@ -1,0 +1,110 @@
+site_name: Microsoft Foundry Enterprise Governance
+site_description: Enterprise governance guidance for Microsoft Foundry AI applications and agents.
+site_url: https://frkim.github.io/foundry-governance/
+repo_url: https://github.com/frkim/foundry-governance
+edit_uri: edit/main/
+docs_dir: _docs
+site_dir: _site
+exclude_docs: |
+  !/templates/
+
+theme:
+  name: material
+  language: en
+  font: false
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    not_found: warn
+    anchors: warn
+    unrecognized_links: warn
+
+nav:
+  - Home: README.md
+  - Governance domains:
+      - 00 · Overview: docs/00-overview/README.md
+      - 01 · Governance model: docs/01-governance-model/README.md
+      - 02 · Resource topology: docs/02-resource-topology/README.md
+      - 03 · Identity and access: docs/03-identity-access/README.md
+      - 04 · Network security: docs/04-network-security/README.md
+      - 05 · Data governance: docs/05-data-governance/README.md
+      - 06 · Agent architecture: docs/06-agent-architecture/README.md
+      - 07 · Agent security: docs/07-agent-security/README.md
+      - 08 · Tools: docs/08-tools/README.md
+      - 09 · MCP: docs/09-mcp/README.md
+      - 10 · AI Gateway: docs/10-ai-gateway/README.md
+      - 11 · Model governance: docs/11-model-governance/README.md
+      - 12 · Quality and evaluation: docs/12-quality-evaluation/README.md
+      - 13 · Observability: docs/13-observability/README.md
+      - 14 · Security monitoring: docs/14-security-monitoring/README.md
+      - 15 · Guardrails: docs/15-guardrails/README.md
+      - 16 · Skills: docs/16-skills/README.md
+      - 17 · Sharing: docs/17-sharing/README.md
+      - 18 · Consumption: docs/18-consumption/README.md
+      - 19 · FinOps: docs/19-finops/README.md
+      - 20 · CI/CD: docs/20-cicd/README.md
+      - 21 · Change management: docs/21-change-management/README.md
+      - 22 · Production operations: docs/22-production-operations/README.md
+      - 23 · Human-in-the-loop: docs/23-human-in-the-loop/README.md
+      - 24 · Compliance: docs/24-compliance/README.md
+      - 25 · AI inventory: docs/25-ai-inventory/README.md
+      - 26 · Maturity model: docs/26-maturity-model/README.md
+  - Architecture:
+      - Architecture library: architecture/README.md
+      - Reference architectures: architecture/reference-architectures/README.md
+      - Decision trees: architecture/decision-trees/README.md
+      - Diagram conventions: architecture/diagrams/README.md
+  - Governance:
+      - Policies: governance/policies/README.md
+      - Standards: governance/standards/README.md
+      - Baselines: governance/baselines/README.md
+      - Controls: governance/controls/README.md
+  - Implementation aids:
+      - Checklists:
+          - Architecture review: checklists/architecture-review.md
+          - Security review: checklists/security-review.md
+          - Production readiness: checklists/production-readiness.md
+          - Go-live: checklists/go-live.md
+      - Templates:
+          - Agent registration: templates/agent-registration.md
+          - Model registration: templates/model-registration.md
+          - Tool registration: templates/tool-registration.md
+          - MCP registration: templates/mcp-registration.md
+          - Exception request: templates/exception-request.md
+      - Examples:
+          - Single agent: examples/single-agent/README.md
+          - Multi-agent: examples/multi-agent/README.md
+          - MCP: examples/mcp/README.md
+          - AI Gateway: examples/ai-gateway/README.md
+          - RAG: examples/rag/README.md
+          - Enterprise: examples/enterprise/README.md
+  - References:
+      - Microsoft Foundry: references/microsoft-foundry.md
+      - Azure: references/azure.md
+      - Security: references/security.md
+      - Responsible AI: references/responsible-ai.md
+  - Contributing: CONTRIBUTING.md
+  - Presentation: https://frkim.github.io/foundry-governance/presentation/
