@@ -61,6 +61,39 @@ test('generated documentation links, anchors, and assets resolve under the Pages
   }
 });
 
+test('Markdown task lists render as read-only checkboxes with matching states', () => {
+  for (const source of sources) {
+    const markdown = readFileSync(path.join(root, source), 'utf8');
+    const tasks = [...markdown.matchAll(/^\s*- \[([ xX])\] /gm)];
+    if (!tasks.length) continue;
+    const html = readFileSync(path.join(site, pagePath(source)), 'utf8');
+    const article = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/)[1];
+    const checkboxes = [...article.matchAll(/<input\b[^>]*\btype="checkbox"[^>]*>/g)];
+    assert.equal(checkboxes.length, tasks.length, `Missing task checkboxes in ${source}`);
+    for (const [index, [checkbox]] of checkboxes.entries()) {
+      assert.match(checkbox, /\bdisabled(?=[=\s/>])/, `Editable task checkbox in ${source}`);
+      assert.equal(/\bchecked(?=[=\s/>])/.test(checkbox), tasks[index][1].toLowerCase() === 'x',
+        `Incorrect checkbox state in ${source}`);
+    }
+  }
+});
+
+test('checklist evidence stays nested under its review criterion', () => {
+  for (const source of sources.filter(source => source.startsWith('checklists/'))) {
+    const markdown = readFileSync(path.join(root, source), 'utf8');
+    const criteria = [...markdown.matchAll(/^- \[ \] \*\*([A-Z]+-\d+)/gm)];
+    const html = readFileSync(path.join(site, pagePath(source)), 'utf8');
+    const items = [...html.matchAll(/<li class="task-list-item">([\s\S]*?)<\/li>/g)];
+    assert.ok(criteria.length > 0, `No review criteria in ${source}`);
+    assert.equal(items.length, criteria.length, `Missing review criteria in ${source}`);
+    for (const [index, [, item]] of items.entries()) {
+      assert.ok(item.includes(`<strong>${criteria[index][1]} `), `Wrong criterion in ${source}`);
+      assert.match(item, /<ul>\s*<li>Evidence:/,
+        `Evidence is not nested under ${criteria[index][1]} in ${source}`);
+    }
+  }
+});
+
 test('documentation loads only self-hosted assets, including Mermaid', () => {
   assert.ok(existsSync(path.join(site, 'assets/javascripts/mermaid.min.js')));
   for (const source of sources) {

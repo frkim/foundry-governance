@@ -106,6 +106,7 @@ References: [MkDocs](https://www.mkdocs.org/), [Material for MkDocs](https://squ
 ## Content conventions
 
 - Use `README.md` as the entry point for each numbered governance domain.
+- Use Markdown task lists (`- [ ]`) for checklist criteria and indent nested evidence bullets by four spaces so GitHub and MkDocs keep them under the correct criterion. Published checkboxes are read-only; complete review records in an approved access-controlled system, not on the public site.
 - Keep the canonical `GOV-01`–`GOV-12` identifiers in the [control catalog](governance/controls/README.md); link instead of creating competing policy numbering.
 - Relative links connect repository content. External citations identify capabilities, not endorse vendor material as enterprise policy.
 - Use synthetic asset IDs and aggregate evidence. Keep actual inventory, approval records, secrets, and regulated evidence in approved access-controlled enterprise systems.
