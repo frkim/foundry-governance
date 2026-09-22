@@ -39,6 +39,34 @@ test('every documentation source is published, navigable, and searchable', () =>
   }
 });
 
+test('documentation uses only canonical governance control identifiers', () => {
+  const catalog = readFileSync(path.join(root, 'governance/controls/README.md'), 'utf8');
+  const controls = [...catalog.matchAll(/<a id="(gov-\d+)"><\/a>/g)].map(([, id]) => id.toUpperCase());
+  assert.equal(controls.length, 12);
+  assert.equal(new Set(controls).size, controls.length);
+  for (const source of sources) {
+    const markdown = readFileSync(path.join(root, source), 'utf8');
+    for (const [control] of markdown.matchAll(/\bGOV-\d+\b/g)) {
+      assert.ok(controls.includes(control), `Unknown control ${control} in ${source}`);
+    }
+  }
+});
+
+test('walkthrough evidence and pre-launch checks cover every canonical control', () => {
+  const example = readFileSync(path.join(root, 'examples/single-agent/README.md'), 'utf8');
+  const evidenceRows = example.split('\n').filter(line => /^\| GOV-\d+/.test(line)).join('\n');
+  const checklist = readFileSync(path.join(root, 'checklists/go-live.md'), 'utf8');
+  const gate = checklist.indexOf('### Independent authorization gate');
+  assert.ok(gate > 0, 'Missing pre-traffic authorization gate');
+  const preLaunch = checklist.slice(0, gate);
+  for (let control = 1; control <= 12; control++) {
+    const id = `GOV-${String(control).padStart(2, '0')}`;
+    assert.ok(evidenceRows.includes(id), `Walkthrough lacks evidence mapping for ${id}`);
+    assert.ok(preLaunch.includes(`#${id.toLowerCase()}`), `Pre-launch checks omit ${id}`);
+  }
+  assert.match(preLaunch, /control record\]\([^)]*#how-to-use-the-catalog\)/);
+});
+
 test('generated documentation links, anchors, and assets resolve under the Pages project path', () => {
   for (const source of sources) {
     const output = pagePath(source);

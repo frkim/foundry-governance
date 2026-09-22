@@ -17,6 +17,21 @@ An opinionated enterprise framework for architects, security and data teams, pla
 
 **Research snapshot:** 2026-09-16. Foundry evolves rapidly. Read the [capability/status register](references/microsoft-foundry.md) before implementation. GA, Preview, Deprecated, and **Verification required** describe individual capabilities, not this framework. Preview or unverified features require explicit approval; they are not automatically production-ready. Direct source verification was limited during bootstrap; the register records this rather than asserting unverified GA status.
 
+### Choose a reading path
+
+You do not need to read every chapter in sequence. Start with your decision, then follow the linked controls and domain guidance.
+
+| Your role / immediate question | Read first | Produce |
+| --- | --- | --- |
+| Sponsor / governance lead: what are we adopting? | [Operating model](docs/01-governance-model/README.md), [controls](governance/controls/README.md), [maturity](docs/26-maturity-model/README.md) | Ratified baseline, named owners, scoped adoption plan |
+| Architect / platform engineer: where and how should it run? | [Topology](docs/02-resource-topology/README.md), [decision trees](architecture/decision-trees/README.md), [architectures](architecture/reference-architectures/README.md) | Boundary and dependency design; [architecture review](checklists/architecture-review.md) |
+| Security / data / compliance reviewer: is the use acceptable? | [Agent security](docs/07-agent-security/README.md), [data governance](docs/05-data-governance/README.md), [compliance](docs/24-compliance/README.md) | Risk/data decisions; [security review](checklists/security-review.md) |
+| Developer / evaluation lead: what must we build and prove? | [Single-agent walkthrough](examples/single-agent/README.md#from-design-to-a-release-decision), [evaluation](docs/12-quality-evaluation/README.md), [CI/CD](docs/20-cicd/README.md) | Registered dependencies, immutable release manifest, test evidence |
+| Operations / release owner: can we safely launch and recover? | [Production operations](docs/22-production-operations/README.md), [production readiness](checklists/production-readiness.md), [go-live](checklists/go-live.md) | Numeric objectives, tested containment/rollback, independent launch decision |
+| FinOps / budget owner: what will it cost and how is it bounded? | [Consumption](docs/18-consumption/README.md), [FinOps](docs/19-finops/README.md) | Allocation, approved budget, tested execution limits |
+
+**First adoption exercise:** take one bounded workload through [registration](templates/agent-registration.md), [risk/baseline selection](governance/baselines/README.md#selecting-and-proving-a-baseline), and all four review checklists. Keep a release-bound record for every `GOV-01`–`GOV-12` control, including independently justified `n/a` decisions. A design-only example or completed document is not a production approval; missing implementation evidence remains a **hold**.
+
 ### Updates to the initial scope
 
 - Current Agent Service guidance distinguishes **prompt and hosted agents**; externally hosted code can also use the Responses API without a persisted agent resource. Such applications still require enterprise inventory and controls.
@@ -24,7 +39,7 @@ An opinionated enterprise framework for architects, security and data teams, pla
 - **Toolbox** adds shared, versioned tool endpoints; **tool search, skills, and agent optimizer** include preview capabilities requiring separate approval and testing. Promoting a shared default or optimizer-generated candidate is a governed release.
 - Established APIM AI capabilities, **Preview Foundry integration**, and the **Preview dedicated AI Gateway tier** have different boundaries and limitations. They are not interchangeable.
 
-These findings refine the original issue rather than freezing outdated terminology into the framework. See the source register for exact scope, references, and uncertainty.
+These findings qualify the framework's deployment recommendations. See the source register for exact scope, references, and uncertainty; the [documentation quality assessment](CONTRIBUTING.md#documentation-quality-assessment) records the later internal review and external verification limits.
 
 ## Documentation website and presentation
 

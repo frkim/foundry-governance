@@ -58,6 +58,34 @@ The MkDocs build checks documentation navigation, links, and heading anchors in 
 
 For future executable contributions, use the repository's then-existing test infrastructure and include validation of allow/deny paths, failure modes, and rollback. Do not label design examples as deployable until actually validated.
 
+## Documentation quality assessment
+
+**Internal review: 2026-09-22.** Scope: all 57 Markdown sources—the homepage and this guide, 27 domain chapters, four architecture pages, four governance catalogs, four checklists, five templates, six worked designs, four reference registers, and the presentation. The review assessed coverage, technical-claim provenance, consistency, navigation, readability, actionability, evidence traceability, maintenance, and publication behavior. It did **not** deploy Azure resources, certify compliance, or independently revalidate every linked product claim.
+
+**Overall assessment:** broad and well-structured governance guidance, with particularly strong separation of proposed policy from platform capability, canonical controls, independent approvals, and privacy-aware evidence. The main weaknesses were reader orientation, the lack of an end-to-end release-evidence walkthrough, and ambiguity between operational checks and periodic governance reviews. Documentation completeness must not be mistaken for implementation readiness.
+
+| Dimension | Finding and improvement | Remaining boundary / accountable role |
+| --- | --- | --- |
+| Coverage | All 25 homepage questions have destinations; 27 chapters cover design through retirement, supported by 16 architectures and 14 decision frameworks | Workload owners still determine applicability and implement controls |
+| Reader navigation | Added [role-based reading paths](README.md#choose-a-reading-path) with concrete outputs and a first-adoption exercise | Readers must follow domain-specific controls, not treat the short path as a reduced baseline |
+| Readability | Added common identity, retrieval and operations acronyms to the [glossary](docs/00-overview/README.md#terminology); retained detailed evidence tables for reviewers | Domain owners should explain new terms at first use and avoid duplicating authoritative policy |
+| Technical accuracy and provenance | Kept feature-specific statuses and explicit uncertainty; recorded the [source revalidation limits](references/microsoft-foundry.md#how-to-interpret-this-register) rather than refreshing all review dates | Platform architecture must reconfirm current source text, rollout, region/tier/API support and lifecycle dates before adoption |
+| Internal consistency | Clarified [review cadence precedence](governance/controls/README.md#review-cadence-precedence): inventory reconciliation and exception expiry checks are not quarterly governance meetings | Control owners ratify schedules and retain event-triggered/release checks |
+| Practical adoption | Extended the [single-agent example](examples/single-agent/README.md#from-design-to-a-release-decision) from registration through control evidence, a failed authorization gate and recovery | Example identifiers and thresholds are synthetic; no test outcome is claimed for a real deployment |
+| Evidence and decisions | Strengthened [LIVE-02](checklists/go-live.md#before-any-production-traffic) to reconcile every canonical control before launch, including N/A and exception dispositions | Independent reviewers must inspect release-bound evidence; checked boxes alone do not authorize launch |
+| Publication and regression protection | Strict MkDocs build and site tests cover navigation, search, local links/anchors, assets and checklist rendering; added canonical-control and walkthrough/pre-launch coverage checks | These tests do not validate external source truth, Azure behavior, legal compliance, or every browser/accessibility scenario |
+| Maintenance and duplication | Retained canonical catalogs and linked supporting chapters instead of introducing competing policies; retained the deck as a summary | Platform/domain custodians must update affected references, chapters, templates and slides together when a capability changes |
+
+### External research and unresolved validation
+
+Direct Microsoft Learn retrieval failed during this review; authenticated MicrosoftDocs repository access required SSO authorization. Search-service results were insufficient to reconfirm the visual-workflow and classic API retirement dates. Search results alone were not accepted as replacement primary evidence. The [Foundry register](references/microsoft-foundry.md) therefore retains its **2026-09-16 capability snapshot**, with a separate dated revalidation note; the internal review date above is not a product verification date.
+
+Before production adoption, the platform owner must obtain current primary-source evidence for the [date-driven actions](references/microsoft-foundry.md#date-driven-adoption-actions), resolve the documented [MCP capability conflict](references/azure.md#gateway-enforcement-and-operation), and test the chosen runtime's identity, networking, guardrails and telemetry behavior. Legal/compliance owners must determine applicable obligations. Documentation/site checks cannot close these gaps.
+
+### Repeating the assessment
+
+On a material documentation change, follow one workload from the homepage to registration, baseline selection, control evidence, independent launch approval, operation and retirement. Check both a passing path and a missing/failed-evidence path; preserve `hold`, `fail` and exception distinctions. Record affected pages, source verification method/date, actual build/test/browser results, unresolved limitations and accountable follow-up in the change request. Do not replace historical source dates with the date of an editorial review.
+
 ## Documentation, presentation, and GitHub Pages
 
 GitHub Pages serves the full MkDocs documentation at **https://frkim.github.io/foundry-governance/** and the Marp presentation at **https://frkim.github.io/foundry-governance/presentation/**. The repository README is the documentation homepage. Keep the existing Markdown sources in place: `npm run stage:docs` copies the README, contributing guide, license, chapters, architecture, governance, checklists, templates, examples, and references into ignored `_docs/` while preserving relative links. Add new pages to `mkdocs.yml` navigation; if adding a new top-level content directory, also include it in the staging command and documentation coverage test. Never stage the entire repository.
