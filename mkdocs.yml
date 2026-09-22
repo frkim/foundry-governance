@@ -26,6 +26,7 @@ extra_javascript:
 
 markdown_extensions:
   - tables
+  - pymdownx.tasklist
   - toc:
       permalink: true
       slugify: !!python/object/apply:pymdownx.slugs.slugify
