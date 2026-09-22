@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 const site = path.join(root, '_site');
 const siteUrl = new URL('https://frkim.github.io/foundry-governance/');
 const home = readFileSync(path.join(site, 'index.html'), 'utf8');
+const canonicalControls = Array.from({ length: 12 }, (_, index) => `GOV-${String(index + 1).padStart(2, '0')}`);
 const contentDirectories = ['docs', 'architecture', 'governance', 'checklists', 'templates', 'examples', 'references'];
 const sources = ['README.md', 'CONTRIBUTING.md', ...contentDirectories.flatMap(directory =>
   readdirSync(path.join(root, directory), { recursive: true })
@@ -42,8 +43,7 @@ test('every documentation source is published, navigable, and searchable', () =>
 test('documentation uses only canonical governance control identifiers', () => {
   const catalog = readFileSync(path.join(root, 'governance/controls/README.md'), 'utf8');
   const controls = [...catalog.matchAll(/<a id="(gov-\d+)"><\/a>/g)].map(([, id]) => id.toUpperCase());
-  assert.equal(controls.length, 12);
-  assert.equal(new Set(controls).size, controls.length);
+  assert.deepEqual(controls, canonicalControls);
   for (const source of sources) {
     const markdown = readFileSync(path.join(root, source), 'utf8');
     for (const [control] of markdown.matchAll(/\bGOV-\d+\b/g)) {
@@ -54,17 +54,73 @@ test('documentation uses only canonical governance control identifiers', () => {
 
 test('walkthrough evidence and pre-launch checks cover every canonical control', () => {
   const example = readFileSync(path.join(root, 'examples/single-agent/README.md'), 'utf8');
-  const evidenceRows = example.split('\n').filter(line => /^\| GOV-\d+/.test(line)).join('\n');
+  const evidenceRows = example.split('\n').filter(line => /^\| GOV-\d+/.test(line));
+  const evidenceControls = evidenceRows.flatMap(row => {
+    const [, controls, evidence, owner] = row.split('|');
+    assert.ok(evidence?.trim(), `Missing walkthrough evidence: ${row}`);
+    assert.ok(owner?.trim(), `Missing walkthrough producer: ${row}`);
+    return controls.match(/\bGOV-\d+\b/g);
+  });
+  assert.deepEqual(evidenceControls, canonicalControls);
   const checklist = readFileSync(path.join(root, 'checklists/go-live.md'), 'utf8');
+  const start = checklist.indexOf('## Before any production traffic');
   const gate = checklist.indexOf('### Independent authorization gate');
-  assert.ok(gate > 0, 'Missing pre-traffic authorization gate');
-  const preLaunch = checklist.slice(0, gate);
-  for (let control = 1; control <= 12; control++) {
-    const id = `GOV-${String(control).padStart(2, '0')}`;
-    assert.ok(evidenceRows.includes(id), `Walkthrough lacks evidence mapping for ${id}`);
-    assert.ok(preLaunch.includes(`#${id.toLowerCase()}`), `Pre-launch checks omit ${id}`);
+  assert.ok(start >= 0 && gate > start, 'Missing pre-traffic checks or authorization gate');
+  const preLaunch = checklist.slice(start, gate);
+  const linkedControls = [...preLaunch.matchAll(/\]\(\.\.\/governance\/controls\/README\.md#(gov-\d+)\)/g)]
+    .map(([, id]) => id.toUpperCase());
+  for (const id of canonicalControls) {
+    assert.ok(linkedControls.includes(id), `Pre-launch checks omit ${id}`);
   }
-  assert.match(preLaunch, /control record\]\([^)]*#how-to-use-the-catalog\)/);
+  const closure = preLaunch.match(/^- \[ \] \*\*LIVE-02\b.*$/m)?.[0];
+  assert.ok(closure, 'Missing independent control-closure criterion');
+  assert.match(closure, /control record\]\([^)]*#how-to-use-the-catalog\)/);
+});
+
+test('rendered reading paths provide role-specific links and adoption outputs', () => {
+  const readingPath = home.match(/<h3 id="choose-a-reading-path">[\s\S]*?(?=<h[1-3]\b)/)?.[0];
+  assert.ok(readingPath, 'Missing role-based reading paths');
+  const body = readingPath.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1];
+  assert.ok(body, 'Reading paths must render as a table');
+  const rows = [...body.matchAll(/<tr>([\s\S]*?)<\/tr>/g)];
+  assert.equal(rows.length, 6, 'Missing reader role');
+  for (const [, row] of rows) {
+    const cells = [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map(([, cell]) => cell);
+    assert.equal(cells.length, 3, 'Each role needs a question, reading links, and an output');
+    assert.ok(cells.every(cell => cell.replace(/<[^>]*>/g, '').trim()), 'Empty reading-path cell');
+    assert.match(cells[1], /<a href="[^"]+">/, `Missing reading link for ${cells[0]}`);
+  }
+  for (const target of ['examples/single-agent/#from-design-to-a-release-decision',
+    'templates/agent-registration/', 'governance/baselines/#selecting-and-proving-a-baseline']) {
+    assert.ok(readingPath.includes(`href="${target}"`), `Missing adoption link: ${target}`);
+  }
+});
+
+test('rendered walkthrough retains release bindings, review gates, and failure guidance', () => {
+  const html = readFileSync(path.join(site, 'examples/single-agent/index.html'), 'utf8');
+  const walkthrough = html.match(/<h2 id="from-design-to-a-release-decision">([\s\S]*?)<\/article>/)?.[1];
+  assert.ok(walkthrough, 'Missing release-decision walkthrough');
+  for (const field of ['agent_id', 'deployment_id', 'version', 'environment']) {
+    assert.match(walkthrough, new RegExp(`<code>${field}=[^<]+</code>`), `Missing candidate binding: ${field}`);
+  }
+  for (const target of ['templates/agent-registration/', 'governance/baselines/#selecting-and-proving-a-baseline',
+    'governance/standards/#canonical-metadata-contract', 'governance/controls/#how-to-use-the-catalog',
+    'checklists/architecture-review/', 'checklists/security-review/', 'checklists/production-readiness/',
+    'checklists/go-live/#independent-authorization-gate']) {
+    assert.ok(walkthrough.includes(`href="../../${target}"`), `Missing walkthrough step: ${target}`);
+  }
+  assert.match(walkthrough, /<strong>Illustrative hold:<\/strong>[^<]*Block launch/);
+  assert.match(walkthrough, /Missing test results are <code>hold<\/code>, not <code>n\/a<\/code>/);
+  assert.match(walkthrough, /<strong>Recovery exercise:<\/strong>/);
+});
+
+test('new adoption and review sections are indexed for search', () => {
+  const search = JSON.parse(readFileSync(path.join(site, 'search/search_index.json'), 'utf8'));
+  for (const location of ['#choose-a-reading-path', 'examples/single-agent/#from-design-to-a-release-decision',
+    'governance/controls/#review-cadence-precedence', 'CONTRIBUTING/#documentation-quality-assessment']) {
+    assert.ok(search.docs.some(doc => doc.location === location && doc.text.trim()),
+      `Missing searchable section: ${location}`);
+  }
 });
 
 test('generated documentation links, anchors, and assets resolve under the Pages project path', () => {
