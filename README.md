@@ -15,7 +15,7 @@ An opinionated enterprise framework for architects, security and data teams, pla
 
 **Adoption status:** initial documentation baseline, not a certified implementation or a claim of regulatory compliance. “Must” describes a **proposed enterprise policy**, effective only when adopted by your organization. Diagrams and examples are design references, not deployable or service-validated infrastructure.
 
-**Research snapshot:** 2026-09-16. Foundry evolves rapidly. Read the [capability/status register](references/microsoft-foundry.md) before implementation. GA, Preview, Deprecated, and **Verification required** describe individual capabilities, not this framework. Preview or unverified features require explicit approval; they are not automatically production-ready. Direct source verification was limited during bootstrap; the register records this rather than asserting unverified GA status.
+**Latest feature review:** 2026-09-23, extending the 2026-09-16 baseline. Foundry evolves rapidly. Read the [researched feature map and verification limits](references/microsoft-foundry.md#september-2026-feature-review) before implementation. GA, Preview, Deprecated, and **Verification required** describe individual capabilities, not this framework. Preview or unverified features require explicit approval; they are not automatically production-ready. The register distinguishes reviewed public MicrosoftDocs sources, conflicting labels, and claims that could not be established.
 
 ### Choose a reading path
 
@@ -34,6 +34,8 @@ You do not need to read every chapter in sequence. Start with your decision, the
 
 ### Updates to the initial scope
 
+- Foundry's direction is an **enterprise operating layer for agents**, not only a model catalog: choose a framework, run on managed infrastructure, connect governed knowledge/tools, retain human control, evaluate, optimize, and measure business value. Component-level support still needs verification.
+- The [September feature review](references/microsoft-foundry.md#september-2026-feature-review) covers durable execution, steering/HITL, memory, discovery and skills, routines, Foundry IQ, evaluation/Replay, optimization/ROI, multi-model routing, residency/networking, channels, developer tooling, and lifecycle changes. Unsupported model names and release claims are not promoted to GA.
 - Current Agent Service guidance distinguishes **prompt and hosted agents**; externally hosted code can also use the Responses API without a persisted agent resource. Such applications still require enterprise inventory and controls.
 - The visual **Foundry workflows feature is Preview with retirement announced for December 1, 2026**. Retain it for migration governance, not new deployment recommendations; use an approved code-based orchestration approach for new workflows.
 - **Toolbox** adds shared, versioned tool endpoints; **tool search, skills, and agent optimizer** include preview capabilities requiring separate approval and testing. Promoting a shared default or optimizer-generated candidate is a governed release.

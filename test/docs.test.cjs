@@ -123,6 +123,32 @@ test('new adoption and review sections are indexed for search', () => {
   }
 });
 
+test('Foundry feature review publishes sourced status boundaries and governance links', () => {
+  const html = readFileSync(path.join(site, 'references/microsoft-foundry/index.html'), 'utf8');
+  const review = html.match(/<h2 id="september-2026-feature-review">([\s\S]*?)(?=<h2\b)/)?.[1];
+  assert.ok(review, 'Missing dated feature review');
+  assert.match(review, /2026-09-23/);
+  const body = review.match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1];
+  assert.ok(body, 'Feature review must render as a table');
+  const rows = [...body.matchAll(/<tr>([\s\S]*?)<\/tr>/g)];
+  const features = new Set();
+  for (const [, row] of rows) {
+    const cells = [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map(([, cell]) => cell);
+    assert.equal(cells.length, 4, 'Each feature needs status, sources, and governance guidance');
+    features.add(cells[0].replace(/<[^>]*>/g, '').trim());
+    assert.match(cells[1], /GA|Preview|Deprecated|Verification required/, `Missing status boundary: ${cells[0]}`);
+    assert.match(cells[2], /href="https:\/\/learn\.microsoft\.com\//, `Missing primary source: ${cells[0]}`);
+    assert.match(cells[3], /href="\.\.\/\.\.\/docs\//, `Missing governance guidance: ${cells[0]}`);
+  }
+  for (const feature of ['Cloud evaluation', 'Trace Replay', 'Agent Optimizer', 'ROI for Agents']) {
+    assert.ok(features.has(feature), `Missing researched feature: ${feature}`);
+  }
+  assert.ok(home.includes('href="references/microsoft-foundry/#september-2026-feature-review"'));
+  const search = JSON.parse(readFileSync(path.join(site, 'search/search_index.json'), 'utf8'));
+  assert.ok(search.docs.some(doc =>
+    doc.location === 'references/microsoft-foundry/#september-2026-feature-review' && doc.text.trim()));
+});
+
 test('generated documentation links, anchors, and assets resolve under the Pages project path', () => {
   for (const source of sources) {
     const output = pagePath(source);

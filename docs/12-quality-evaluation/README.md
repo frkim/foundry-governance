@@ -25,6 +25,19 @@ Use mocks or test endpoints with separate credentials; evaluation can mutate rea
 Keep optimization data separate from the held-out acceptance set and independently validate client-side tool effects.
 Prompt-agent tool-description optimization cannot evaluate actual client-side tool execution; separate tool/action tests are mandatory.
 
+### Continuous quality loop
+
+**Feature review: 2026-09-23**, using public MicrosoftDocs source bodies; other chapter metadata remains unchanged.
+The [Foundry SDK cloud evaluation guide](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation) describes evaluation definitions, runs, datasets, targets, and results.
+Core evaluation GA does not extend to every data source: [synthetic data generation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-synthetic-data) and [deployed-interaction evaluation](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-deployed-interactions) are **Preview**.
+The latter evaluates stored responses or captured traces without replaying the original requests.
+
+Use this governed loop: **redacted production traces → approved/versioned dataset → regression tests → candidate agent → independent release approval → production sampling**.
+Use [Trace Replay](../13-observability/README.md#trace-replay) to investigate recorded behavior, not as proof of reproducible execution.
+Label synthetic cases and validate their realism, coverage, and expected answers; they do not replace representative held-out cases or human grading.
+Keep optimizer training/tuning data separate from release acceptance data, and compare safety, task success, latency, and total cost—not only the optimizer's score.
+Link the dataset, evaluators, model/tool/skill versions, candidate configuration, and results to the release manifest.
+
 ## Enterprise recommendation
 
 Evaluate **before every publish** and **after every meaningful change**.
