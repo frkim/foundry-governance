@@ -20,6 +20,13 @@ A tool may authenticate through a project/agent identity, a stored credential, o
 
 The **Limited Preview agent optimizer** can propose instructions, skills, tool descriptions, and model selections. It is not a tool-approval or production-release authority. Record optimizer inputs/output versions and reassess changed descriptions, executable skill content, transitive tool rights, and model choices before promotion.
 
+### Discovery, authentication, and network boundaries
+
+**Feature review: 2026-09-23.** [Tool search](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/tool-search) selects relevant tools by intent instead of placing every definition into context; the documented search uses BM25 over names, descriptions and parameters. Measure selection accuracy and token savings rather than assuming either.
+[Toolbox authentication](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/tool-authentication) separates access to the toolbox from downstream authentication. Shared credentials/agent identities do not automatically carry end-user permissions.
+For hosted consumers, [the MCP endpoint does not block `tools/call` merely because `require_approval=always`](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/use-toolbox-hosted-agent#enforce-tool-approval). Enforce approvals in the consuming runtime and independently authorize effects at the executor; test direct-call bypass.
+[Toolbox network isolation](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox-network-isolation) follows project networking, not a separate toolbox VNet. Work IQ and browser automation are unsupported in isolated projects in the reviewed matrix; Fabric IQ is conditional and web search uses Microsoft-managed public endpoints. Verify each tool's route rather than labeling an entire toolbox private.
+
 ## Enterprise recommendation
 
 Maintain a versioned, searchable tool catalog linked to owners, consuming agents, backend services, data classes, permissions, SLOs, and retirement plans. Register operations rather than approving a whole server or API as “safe.”

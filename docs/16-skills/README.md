@@ -34,6 +34,13 @@ Validate discovery, resource reads, authorization, and gateway transport separat
 | Tool/MCP dependency | External capability used by the skill | Endpoint, schema, authorization, versions, data transfer |
 | Agent attachment | Makes a skill available to an agent | Intended use, authority, compatibility, evaluation |
 
+### Private Skill Catalog
+
+**Feature review: 2026-09-23.** The [Private Skill Catalog guide](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/private-skill-catalog) is **Preview** and uses Azure API Center for organization-scoped skill discovery, source-repository references, and allowed APIs/MCP servers.
+Catalog access is separate from Foundry project access; validate reader/publisher roles independently.
+Use the package contract below for reusable security, HR, legal, coding or other domain skills: an organizational label is not permission to access that domain's data.
+Pin and review the resolved repository/artifact version, transitive dependencies and allowed operations before attaching a skill. “Private catalog” describes catalog scope, not proof of private-network execution or trustworthy instructions.
+
 ## Enterprise recommendation
 
 Treat every skill as a governed software-and-content package.

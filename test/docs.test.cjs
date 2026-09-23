@@ -140,7 +140,12 @@ test('Foundry feature review publishes sourced status boundaries and governance 
     assert.match(cells[2], /href="https:\/\/learn\.microsoft\.com\//, `Missing primary source: ${cells[0]}`);
     assert.match(cells[3], /href="\.\.\/\.\.\/docs\//, `Missing governance guidance: ${cells[0]}`);
   }
-  for (const feature of ['Cloud evaluation', 'Trace Replay', 'Agent Optimizer', 'ROI for Agents']) {
+  for (const feature of ['Hosted Agents', 'Long-running agents', 'Human-in-the-loop and steering',
+    'Agent memory', 'Toolboxes', 'Tool search', 'Private Skill Catalog', 'Routines', 'Foundry IQ',
+    'Cloud evaluation', 'Trace Replay', 'Agent Optimizer', 'ROI for Agents', 'Model Router',
+    'GPT-6 Astra, Sol and Luna', 'Claude and multi-model', 'Data Zones', 'Network isolation',
+    'Teams and Microsoft 365 Copilot', 'Voice Live', 'Framework choice', 'Foundry Toolkit for VS Code',
+    'Foundry Workflows', 'Project and API evolution']) {
     assert.ok(features.has(feature), `Missing researched feature: ${feature}`);
   }
   assert.ok(home.includes('href="references/microsoft-foundry/#september-2026-feature-review"'));

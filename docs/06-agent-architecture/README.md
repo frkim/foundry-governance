@@ -29,6 +29,7 @@ The networking guide covers **both prompt and hosted agents**; validate BYO/mana
 | Composition | Multi-agent system | Multiple agents and handoffs; not inherently a dedicated service SKU |
 | SDK/framework | Microsoft Agent Framework | Code-first agents and workflows; verify package, language, and hosting compatibility |
 | SDK/framework | LangGraph | Explicit graph/state orchestration; validate checkpoint and adapter behavior |
+| SDK/framework | GitHub Copilot SDK | Documented hosted authoring option; verify the SDK, hosting adapter, protocol and dependency versions |
 | SDK/framework | LangChain | Model/tool abstractions and integrations; inspect transitive dependencies |
 | SDK/framework | Semantic Kernel | Existing code-first orchestration/plugin integration; do not assume automatic migration parity |
 
@@ -53,6 +54,31 @@ Conversation history persists separately, and an application state store has its
 Idling compute is not deletion: inventory and govern retention, access, backup, and erasure for every state surface.
 Document protocol compatibility separately from agent type: Responses, Invocations, and WebSocket require target validation.
 The reviewed hosted guide explicitly labels A2A v1.0 GA and v0.3 Preview; do not generalize those labels to hosted features.
+
+### Managed runtime, durable work, and developer choice
+
+**Feature review: 2026-09-23.** See the [researched feature map](../../references/microsoft-foundry.md#september-2026-feature-review) for source-specific status and limitations.
+Separate **agent logic/framework**, **managed execution**, **knowledge/memory**, **tools**, and **governance** in the design. Framework choice is not a waiver of runtime or supply-chain controls.
+The **Foundry Toolkit for VS Code** consolidates project/resource work and agent authoring, testing and deployment in the IDE; some experiences remain Preview. Inspect extension permissions and use the same reviewed artifacts and release gates as portal/CLI deployment.
+Current project SDK/Responses APIs distinguish agent version management from inference and conversations. Record endpoint type and migrate threads/runs to conversations/responses with state and authorization regression tests; project, resource-level OpenAI and Anthropic endpoints are not interchangeable.
+Treat IDE development, local tests, hosted deployment, and publication to Teams/Microsoft 365 Copilot as separate stages, with separate identities and release evidence.
+Voice channels add recording/transcript retention, consent, interruption handling, and escalation requirements; a voice integration's GA label does not establish support for every agent mode.
+
+Long-running execution changes the workload from a single conversational request into a stateful process. The following are enterprise acceptance checks, not guarantees supplied by a hosted runtime:
+
+The reviewed resilience APIs are **Preview**: crash recovery is opt-in, restarts the handler, and does not restore local variables. Application/framework checkpoints determine where work resumes. Stream-event replay is separate from execution checkpoints and requires the appropriate durable backing.
+
+| Capability | Acceptance evidence |
+| --- | --- |
+| Checkpoint and crash recovery | Interrupt before/after a side effect; recover without duplicate transactions. Persist versioned state, idempotency keys and remaining budgets; reconcile ambiguous external outcomes |
+| Reconnect and streaming | Resume from a recorded cursor without treating a disconnected client as task cancellation; test lost/duplicate events and authorization on reconnect |
+| Human approval and steering | Authenticate/authorize each intervention; bind approval to exact arguments and release. Reject expired or changed approvals after recovery; steering does not grant new authority |
+| Routines and event triggers | Register trigger owner, service principal, schedule/time zone or event source, deduplication key, concurrency/cost limits, and pause switch; test missed/duplicate events |
+| Session and application state | Demonstrate tenant isolation, retention, deletion and state-schema migration independently of compute restart |
+
+Do not equate checkpointing with exactly-once external actions. Use explicit compensation/manual reconciliation when an external tool's outcome is unknown.
+Scheduled/event-driven work must not silently reuse an absent user's delegated authority. Route sensitive actions through [transaction-bound human review](../23-human-in-the-loop/README.md).
+Apply one end-to-end deadline and remaining execution budget across restarts, child agents, retries, and waiting states, with an explicit approved policy for pauses.
 
 ## Enterprise recommendation
 
