@@ -211,6 +211,9 @@ style: |
     background: rgba(255, 255, 255, 0.92);
     border-radius: 8px;
   }
+  section.matrix table { font-size: 19px; }
+  section.matrix td { padding: 6px 14px; }
+  section.matrix blockquote { font-size: 21px; }
   section.matrix td strong, section.matrix td em, section.matrix td code {
     display: inline-block;
     padding: 1px 12px;
@@ -407,7 +410,7 @@ Framework choice is not a waiver of runtime or supply-chain controls.
 - Register routine triggers with an owner, deduplication key, concurrency
   and cost limits, and a pause switch.
 
-> Checkpointing is not **exactly-once** external action.
+> Checkpointing is not an **exactly-once** external action.
 
 [Managed runtime and durable work](https://github.com/frkim/foundry-governance/blob/main/docs/06-agent-architecture/README.md#managed-runtime-durable-work-and-developer-choice)
 
@@ -440,6 +443,7 @@ Framework choice is not a waiver of runtime or supply-chain controls.
 4. Enterprise
 
 - Register an owner, approved purpose, version, permissions, and SLO.
+- Pin contracts; review schema, permission, and default-version changes.
 - Discovery is not authorization: tool search selects candidates, and a
   hosted MCP endpoint may not block a direct call.
 - Toolbox network support follows the project, not a separate boundary;
@@ -457,8 +461,8 @@ Framework choice is not a waiver of runtime or supply-chain controls.
   prove which calls actually traverse the AI Gateway.
 - Distinguish established APIM capabilities from **Preview Foundry
   integration** and the **Preview dedicated AI Gateway tier**.
-- Model Router is GA, but routing metadata and session affinity are
-  **Preview**, and catalog presence is not router eligibility.
+- Model Router's core is GA, but routing metadata and session affinity
+  are **Preview**, and catalog presence is not router eligibility.
 - Approve the exact hosting offer, provider terms, processing geography,
   and cost — not the model family name.
 - Record the serving model and fallback attempts with the release.
@@ -484,6 +488,8 @@ Framework choice is not a waiver of runtime or supply-chain controls.
 - Exercise prompt injection, permission denial, and approval expiry.
 - Core cloud evaluation is GA; **synthetic data and deployed-interaction
   evaluation are Preview** — label and validate generated cases.
+- Measure safety, latency, and cost with functional outcomes, and block
+  unaccepted regressions.
 - Re-evaluate model, prompt, data, tool, route, and guardrail changes.
 
 [Continuous quality loop](https://github.com/frkim/foundry-governance/blob/main/docs/12-quality-evaluation/README.md#continuous-quality-loop) · [Guardrails](https://github.com/frkim/foundry-governance/blob/main/docs/15-guardrails/README.md)
@@ -588,17 +594,16 @@ Maturity is demonstrated control effectiveness, not document count.
 
 | Capability | Status | Enterprise action |
 | --- | --- | --- |
-| Hosted agents and Responses | **GA** | Verify each runtime component separately |
+| Prompt and hosted agents, Responses | **GA** | Validate runtime, API, region, deployment type |
 | Durable execution and reconnect | *Preview* | Own checkpoints, idempotency, budgets |
 | Human approval and steering | *Preview* | Bind approval to arguments and expiry |
 | Memory, Work IQ, Fabric IQ | *Preview* | Prove scope, retention, and deletion |
 | Tool search and skill catalog | *Preview* | Approve each route and permission |
 | Trace Replay label and scope | `Conflicting` | Resolve before relying on the label |
 | GPT-6 GA status, ROI for Agents | `Verification required` | Absent evidence is not absent risk |
+| Visual Foundry workflows | `Retiring 2026-12-01` | Move new work to code-based orchestration |
 
-**Visual Foundry workflows are Preview with retirement announced for December 1, 2026.**
-
-[Dated capability and source register](https://github.com/frkim/foundry-governance/blob/main/references/microsoft-foundry.md#september-2026-feature-review)
+[Dated capability and source register, reviewed 2026-09-23](https://github.com/frkim/foundry-governance/blob/main/references/microsoft-foundry.md#september-2026-feature-review)
 
 ---
 
