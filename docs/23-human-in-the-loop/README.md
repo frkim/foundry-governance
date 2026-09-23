@@ -19,6 +19,11 @@ A chat message saying “approved” is not sufficient evidence of authorization
 Validate language/package/version support and hosting behavior before choosing approval APIs.
 Foundry workflow preview behavior must not be assumed identical to code-defined Agent Framework workflows.
 
+**Feature review: 2026-09-23.** Foundry now documents [long-running HITL approval](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-human-in-the-loop) and [steerable hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/deploy-steerable-agent) as **Preview**.
+Durable task suspension/resume uses task identity; Responses integrations with Agent Framework or LangGraph use framework approval/interrupt mechanisms and persisted checkpoints.
+Steering queues a new turn and requests cooperative cancellation of the active turn; it is not an instantaneous stop, concurrent fork, or authorization grant.
+Test reject, timeout, crash/recovery and modified-argument paths before financial, procurement or production-operation actions. Recovery must not revive an expired approval or repeat an already committed action.
+
 ## Enterprise recommendation
 
 Use deterministic risk rules to select review requirements; model confidence is not an authorization rule.

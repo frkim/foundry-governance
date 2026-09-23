@@ -18,6 +18,10 @@ API Management network capabilities depend on tier and generation. Traditional A
 
 Hosted network egress guardrails are a separate **Preview**, hosted-only control surface, not a replacement for VNet/firewall design. Their audit mode can still transform/rewrite traffic. Dynamic secret/identity header injection, service-tag/IP rules, MCP policies, and PII/DLP inspection described as future capabilities must not be counted as current protections.
 
+**Feature review: 2026-09-23.** The [VNet deployment guide](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/virtual-networks) has path-specific account-creation/registry prerequisites and retains a public-agent-endpoint caveat in one deployment tab. Confirm the exact supported path rather than claiming universal private ingress.
+[Teams/Microsoft 365 Copilot publishing from private projects](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/publish-copilot-virtual-network) requires an explicitly enabled, source-IP-filtered **public Activity Protocol route**; channel delivery is not through Private Link. Record and approve that exposure separately from private application access.
+Also check [memory](../05-data-governance/README.md#memory-and-connected-knowledge) and [toolbox-specific exclusions](../08-tools/README.md#discovery-authentication-and-network-boundaries); neither inherits universal network isolation from the hosting runtime.
+
 ## Enterprise recommendation
 
 Select a connectivity model during [topology review](../02-resource-topology/README.md), based on data and business impact, not ease of portal setup. “Regulated” below is an enterprise design category, not an Azure SKU or certification.

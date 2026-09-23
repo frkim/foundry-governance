@@ -35,6 +35,16 @@ Data-zone choices are model-dependent; US/EU/APAC availability and an EU boundar
 Where older PTU guidance suggests a narrower boundary, use the broader documented bound until the provider confirms the required restriction.
 Privacy assurances for **Models sold by Azure** do not automatically cover every catalog offer, including provider-hosted Anthropic arrangements.
 
+### Multi-model routing and provider boundaries
+
+**Feature review: 2026-09-23.** The [source register](../../references/microsoft-foundry.md#september-2026-feature-review) confirms catalog entries for GPT-6 Astra/Sol/Luna but does not establish their explicit GA status. Claude Opus 5.5 has explicit model-specific GA entries for Azure-hosted and Anthropic-hosted offers; approve the offer, not just the name.
+Azure-hosted Claude still has Anthropic provider/processing terms and uses the Anthropic Messages API; common Foundry access does not imply identical APIs, network support, retention or operating terms across providers.
+
+**Model Router** supplies a GA multi-model routing abstraction; September routing metadata and direct Chat Completions session affinity are **Preview**. Session affinity is best effort, is not Agent Service session affinity, and does not store conversation context or guarantee cache hits.
+Approve an explicit model subset for both normal routing and fallback, including provider, data class, processing geography, tool behavior and cost. Catalog presence does not establish router support: the reviewed router pool does not list GPT-6 or Opus 5.5.
+Capture the serving model and available ordered attempts/fallback information, correlated with the release and trusted cost allocation. Preview metadata can be absent; its absence does not prove no fallback occurred.
+Evaluate the entire allowed pool and failure paths before promotion; use [quality gates](../12-quality-evaluation/README.md), not a cheaper-model preference alone.
+
 ## Enterprise recommendation
 
 Maintain an allowlist indexed by **model + version + provider + deployment type + region + use case + data class**.

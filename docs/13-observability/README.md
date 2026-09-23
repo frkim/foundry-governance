@@ -26,6 +26,14 @@ Foundry Control Plane/Operate is a **Preview, currently portal-only** fleet-view
 It documents subscription-scoped views, supported external agents, metrics, and Defender/Purview/Entra integrations.
 Verify scope, access, connector configuration, and redacted signal coverage; a visible asset does not prove monitoring or enforcement.
 
+### Trace Replay
+
+**Feature review: 2026-09-23.** The [Trace Replay guide](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-agent-replay) describes recorded conversation/span inspection through User and Trajectories views, filtering, timing/token analysis, and sequential playback.
+This is **not deterministic re-execution** of an agent or its tools, nor crash recovery.
+The guide retains a Preview label; the [readiness table](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability#feature-readiness-at-ga) lists tracing including Replay as GA for prompt/hosted agents and Preview for workflow/external agents. Resolve this scope/label difference for the chosen experience before approval.
+Apply the same content access, redaction, and retention controls to replayed traces and exported datasets as to the original telemetry.
+Turn approved incident examples into [versioned regression cases](../12-quality-evaluation/README.md#continuous-quality-loop); any separate test that executes tools needs isolated endpoints, bounded budgets, and side-effect controls.
+
 ## Enterprise recommendation
 
 Every production agent needs the minimum signals below, including externally hosted agents.

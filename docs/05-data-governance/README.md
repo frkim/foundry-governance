@@ -18,6 +18,17 @@ Model deployment types and providers have different processing-geography and dat
 
 The current deployment-type guidance describes Standard/Regional Provisioned processing within an Azure **geography**, not necessarily a single region; data zones are Microsoft-defined boundaries. Older privacy/PTU descriptions differ, so strict residency needs explicit confirmation rather than selecting the narrowest wording. “Not used for training” also does not mean “never retained.”
 
+### Memory and connected knowledge
+
+**Feature review: 2026-09-23.** The [source register](../../references/microsoft-foundry.md#september-2026-feature-review) records feature-specific status and primary references.
+
+- **Agent memory — Preview:** framework/session context differs from managed long-term user-profile, chat-summary and procedural memory. Procedural memory is learned task guidance, not an executable skill or an authorization rule. Low-level memory APIs require explicit scope selection; derive tenant/user/purpose scope from authenticated context, not model-supplied identifiers. Test cross-user denial, poisoning, correction, expiry and deletion. The reviewed memory service does not support VNet integration; a private agent does not make its memory private-networked.
+- **Foundry IQ — partial GA:** Azure AI Search-backed knowledge bases have API-versus-portal and retrieval-feature distinctions. Work IQ (Microsoft 365 context) and Fabric IQ integrations are separately **Preview**, with their own permissions, licensing and network requirements. Permission-aware retrieval is not permission-free ingestion; propagate source ACL changes and deletion to derived stores.
+- **Web knowledge:** the reviewed sources describe Web Search/Grounding with Bing, not an established “Web IQ” product. Review their separate data-processing/geographic terms before sending enterprise context; do not assume the Foundry resource's Azure boundary applies.
+
+An architecture connecting Databricks or another existing data platform through Fabric and agent-accessible knowledge is **conceptual**, not a verified built-in connector chain or a customer deployment. Validate each connector, movement/copy, identity, data entitlement and freshness contract; existing data platforms need not be replaced to use agents.
+Inventory memory, execution checkpoints and knowledge indexes separately: deleting a conversation is not evidence that all three were erased.
+
 ## Enterprise recommendation
 
 Classify the **whole data path**, including derived embeddings, summaries, conversation memory, tool arguments/results, caches, and logs. Treat these as sensitive when they can reveal the underlying information. Classifications and retention intervals below are enterprise starting points, not Microsoft defaults or legal advice.

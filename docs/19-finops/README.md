@@ -84,6 +84,15 @@ For a zero denominator report “not applicable,” not zero efficiency or infin
 Avoid double-counting cached tokens within total input tokens; follow the provider's billing categories.
 PTU utilization is not simply used TPM / nominal quota and does not directly equal reservation utilization.
 
+### Connecting agent telemetry to business value
+
+**Feature review: 2026-09-23.** The proposed **ROI for Agents — Private Preview** product claim was not established by the accessible Microsoft cost, monitoring, and capability-reference sources. Its availability remains **Verification required** in the [feature review](../../references/microsoft-foundry.md#september-2026-feature-review); do not make financial reporting depend on access to it.
+
+The enterprise measurement approach does not require that feature: correlate trusted agent/release/run identifiers with reconciled operating cost and independently verified business outcomes.
+The business owner approves the baseline, benefit valuation, reporting window, and treatment of failed, duplicated, or human-reworked tasks; FinOps reconciles the fully loaded cost.
+Report benefits, total cost, net value, and ROI together using the KPI definitions above. Separate estimated time savings and avoided costs from realized financial benefits, and prevent multiple agents from claiming the same outcome.
+Evaluate Model Router and Agent Optimizer candidates against this cost/quality baseline; cheaper tokens do not establish improved ROI.
+
 ## Policy
 
 1. Require budget owner, unit-cost target, allocation keys, and forecast before production approval.
