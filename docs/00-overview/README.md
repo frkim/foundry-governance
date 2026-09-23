@@ -50,6 +50,11 @@ Govern the **whole application and its dependencies**, not just its agent defini
 | PAYG / PTU | Usage-priced consumption / provisioned throughput capacity; economics and support depend on model and deployment |
 | Approval | Decision by an authorized party over a defined artifact or exact action; not a generic “yes” in an untrusted conversation |
 | Evidence | Access-controlled, versioned proof of a control's design and operation, with owner, date, scope, and retention |
+| RAG | Retrieval-augmented generation: supplying retrieved material as model context; retrieval must enforce the caller's data permissions |
+| RBAC / RACI | Role-based access control enforces technical permissions; Responsible, Accountable, Consulted, Informed assigns organizational duties. Neither substitutes for the other |
+| SLI / SLO / SLA | Service-level indicator is a measurement; objective is its approved target/window; agreement is a contractual commitment. An internal SLO is not a Microsoft SLA |
+| RTO / RPO | Recovery time objective bounds the targeted restoration time; recovery point objective bounds acceptable data loss measured in time. Both need workload-specific tests |
+| SOC / FinOps | Security operations center handles security detection/response; FinOps is the cross-functional practice of managing technology cost and business value |
 
 ## Policy
 
