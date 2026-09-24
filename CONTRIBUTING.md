@@ -92,6 +92,8 @@ GitHub Pages serves the full MkDocs documentation at **https://frkim.github.io/f
 
 The [Marp deck](https://github.com/frkim/foundry-governance/blob/main/presentation/slides.md) summarizes the framework; keep detailed policy and capability claims in their authoritative chapters and source registers. Update the deck when its summary is affected. Keep slides short, retain the proposed-policy disclaimer and dated source reference, and use absolute GitHub links for repository documents: repository-relative Markdown links would break on the published slide page.
 
+Because the build disables raw Markdown HTML, slide diagrams are plain Markdown styled by the deck's own CSS: apply the `flow` (process ribbon from an ordered list), `steps` (numbered cards), `cards` (two-column grid), `stack` (layered bands from a nested list), or `matrix` (status pills from **GA**, *Preview*, and `flagged` markup) class with a Marp `<!-- _class: … -->` directive. Define any new class in the front-matter `style` block; `npm run test:presentation` fails on undefined or unrendered slide classes and on raw HTML in the slides.
+
 ### Local build and checks
 
 Use Node.js **22.12 or newer** (CI uses Node.js 22), Python **3.12**, and a POSIX shell (Linux, macOS, or WSL). From the repository root:
